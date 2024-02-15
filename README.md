@@ -22,7 +22,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 - **Database:** MongoDB
 - **Storage** Amazon S3
 - **Authentication:** JSON Web Tokens (JWT)
-- **Frameworks:** Mongoose, JQuery, Multer, Nodemailer, Socket.io
+- **Frameworks:** Mongoose, JQuery, Multer, Nodemailer, Socket.io, Google Charts, Stupid Table
 
 ## Installation
 
