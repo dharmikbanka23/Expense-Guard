@@ -12,21 +12,23 @@ document.getElementById('toggleChatButton').addEventListener('click', () => {
   }
 });
 
-// Add event listener to send messages
+// Add event listener to send messages on button click
 document.getElementById('sendButton').addEventListener('click', () => {
-  const messageInput = document.getElementById('chatInput');
-  const message = messageInput.value.trim(); // Trim whitespaces
+  sendMessage(); // Pass true to indicate that this is a user message
+});
 
-  if (message) {
-    // Only emit the message if it's not empty
-    socket.emit('chatMessage', message);
-    messageInput.value = ''; // Clear input field
+// Add event listener to send messages on 'Enter' key press
+document.getElementById('chatInput').addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    sendMessage();
   }
-  
 });
 
 // Listen for incoming messages
-socket.on('chatMessage', (message) => {
+socket.on('chatMessage', (message, user) => {
+  // Assuming you have a variable 'currentUserUsername' that stores the current user's username
+  const isUser = user === username;
+
   const chatMessages = document.getElementById('chatMessages');
 
   // Create a timestamp using Moment.js
@@ -34,7 +36,12 @@ socket.on('chatMessage', (message) => {
 
   // Create a new message container element
   const messageContainer = document.createElement('div');
-  messageContainer.className = 'message-container';
+  messageContainer.className = isUser ? 'message-container user-message' : 'message-container other-message';
+
+
+  const usernameElement = document.createElement('p');
+  usernameElement.textContent = user;
+  usernameElement.className = 'username'; // Add a class for styling if needed
 
   // Create a new message element with timestamp
   const messageElement = document.createElement('p');
@@ -46,6 +53,9 @@ socket.on('chatMessage', (message) => {
   timestampElement.className = 'timestamp';
 
   // Append the message and timestamp to the container
+  if(!isUser){
+    messageContainer.appendChild(usernameElement);
+  }
   messageContainer.appendChild(messageElement);
   messageContainer.appendChild(timestampElement);
 
@@ -60,4 +70,19 @@ socket.on('chatMessage', (message) => {
 function scrollToBottom() {
   const chatMessages = document.getElementById('chatMessages');
   chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to send a message
+function sendMessage() {
+  const messageInput = document.getElementById('chatInput');
+  const message = messageInput.value.trim(); // Trim spaces
+
+  if (message) {
+    // Get the JWT token from wherever you store it (e.g., cookies)
+    const user = username;
+
+    // Only emit the message if it's not empty
+    socket.emit('chatMessage', message, user);
+    messageInput.value = ''; // Clear input field
+  }
 }

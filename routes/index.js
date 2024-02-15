@@ -20,7 +20,7 @@ router.get(['/', '/dashboard'], async function (req, res, next) {
 
   // Getting last 15 expenses
   let expenseRecord = await expenseModel.find({ username: username }, { username: 0, __v: 0 }).sort({ expenseDate: -1 }).limit(15);
-
+  
   // Getting the current month expenses
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
@@ -56,7 +56,8 @@ router.get(['/', '/dashboard'], async function (req, res, next) {
     expenseRecord,
     expenses,
     yearlyExpenses,
-    configuration
+    configuration,
+    username
   });
 });
 

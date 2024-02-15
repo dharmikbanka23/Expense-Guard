@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node --watch ./bin/www",
-    "test": "mocha",
-    "test:watch": "mocha --watch"
+    "test": "mocha test/**/*.test.js",
+    "test:watch": "mocha --watch test/**/*.test.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1557.0",
@@ -26,7 +26,10 @@
     "socket.io": "^4.7.4"
   },
   "devDependencies": {
-    "chai": "^5.1.0",
-    "mocha": "^10.3.0"
+    "chai": "^4.4.1",
+    "mocha": "^10.3.0",
+    "rewire": "^7.0.0",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.4"
   }
 }

@@ -29,9 +29,10 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   // Handle chat messages
-  socket.on('chatMessage', (message) => {
-    // Broadcast the message to all connected clients
-    io.emit('chatMessage', message);
+  socket.on('chatMessage', (message, user) => {
+    // Decode the token to get the username
+    // Broadcast the message and username to all connected clients
+    io.emit('chatMessage', message, user);
   });
 
   // Handle disconnect
@@ -39,6 +40,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
+
 /**
  * Listen on provided port, on all network interfaces.
  */
