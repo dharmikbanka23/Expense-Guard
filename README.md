@@ -29,6 +29,9 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/expense-tracker.git
+   git clone https://github.com/dharmikbanka23/expense-guard.git```
 
+2. **Navigate to the project folder:**
 
+```bash
+   cd expense-tracker```
