@@ -35,7 +35,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 2. **Navigate to the project folder:**
 
    ```bash
-      cd expense-guard
+cd expense-guard
    ```
    
 3. **Install dependencies:**
