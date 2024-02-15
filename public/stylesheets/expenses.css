@@ -1,0 +1,252 @@
+.top {
+  display: flex;
+  padding: 10px;
+}
+
+.buttons {
+  margin-left: auto;
+}
+
+.buttons button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  font-size: 18px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.buttons button:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px black;
+}
+
+.filter {
+  background-color: rgb(0, 0, 0, 0.2);
+  margin: 20px 10px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  text-align: end;
+}
+
+.filter button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.field-area {
+  display: flex;
+  text-align: start;
+}
+
+.filter-field {
+  width: 33%;
+}
+
+input,
+select,
+option{
+  width: 95%;
+  height: 40px;
+  margin: 10px 0px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.modal-form input, .modal-form select, .modal-form option{
+  width: 100%;
+  height: 40px;
+  margin: 10px 0px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.modal-form textarea {
+  width: 100%;
+  height: 60px;
+  margin: 10px 0px;
+  padding: 10px;
+  font-size: 16px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.form-buttons{
+  display: flex;
+  justify-content: center;
+  margin: 10px 0px;
+}
+
+.form-buttons button{
+  margin: 0px 10px;
+  padding: 10px 15px;
+  font-size: 18px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.form-buttons button:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px black;
+}
+
+.char-count{
+  text-align: end;
+  font-size: 14px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  margin: 0 auto;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+}
+
+/* Style to prevent textarea resizing */
+textarea {
+  resize: none;
+}
+
+
+
+
+
+.table-area{
+  /* background-color: aqua; */
+  margin: 20px 10px;
+  border-radius: 5px;
+  /* background-color: aqua; */
+}
+
+.table{
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+thead{
+  border-bottom: 1px solid #C4C4C4;
+}
+tbody{
+  padding-top: 5px;
+  overflow-y: auto;
+  height: 400px;
+  display: block;
+}
+
+th{
+  padding: 15px 0px 10px;
+}
+
+th:hover{
+  cursor: pointer;
+}
+
+td{
+  font-size: 16px;
+  padding: 10px 0px;
+}
+
+tr {
+  text-align: center;
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* .table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+} */
+.holder{
+  display: flex;
+  width: 100%;
+}
+
+.contain-1{
+  background-color: #aaaaaa;
+  border-radius: 5px;
+  padding: 0 2px;
+  height: 25px;
+}
+
+.contain-2{
+  background-color: #d5d5d5;
+  border-radius: 5px;
+  padding: 0 2px;
+  height: 25px;
+}
+
+.image-status{
+  height: 20px;
+  margin: 2.5px;
+}
+
+.edit{
+  padding: 5px 5px;
+  font-size: 12px;
+  background-color: #4789B7;
+  color: white;
+  border: none;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.delete{
+  padding: 5px 5px;
+  font-size: 12px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+input[type="file"]{
+  padding: 5px 10px;
+}
+input[type="file"]::-webkit-file-upload-button {
+  outline: none;
+  /* border: none;
+  background: none; */
+  font-size: 16px;
+  padding: 3px 5px;
+}

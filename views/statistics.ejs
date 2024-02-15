@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Expense Guard | Statistics</title>
+  <link rel="icon" href="/images/logo-icon.png" type="image/x-icon">
+  <link rel='stylesheet' href='/stylesheets/sidebar.css'>
+  <link rel='stylesheet' href='/stylesheets/statistics.css'>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="header">
+      <img src="/images/logo.png">
+    </div>
+    <div class="menu">
+      <ul>
+        <li>
+          <a href="/dashboard"><img src="/images/icons/dashboard_white.png">Dashboard</a>
+        </li>
+        <li>
+          <a class="active"><img src="/images/icons/statistics_dark.svg">Statistics</a>
+        </li>
+        <li>
+          <a href="/expenses"><img src="/images/icons/expenses_white.png">Expenses</a>
+        </li>
+        <li>
+          <a href="/adjust"><img src="/images/icons/adjust_white.png">Adjust</a>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      <div class="menu">
+        <ul>
+          <li>
+            <a href="/logout"><img src="/images/icons/profile_white.png">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start content here -->
+  <div class="content">
+    <!-- Start content here -->
+    <div class="top">
+      <h1>Statistics</h1>
+    </div>
+    <div class="graphs">
+      <h3>Yearly</h3>
+      <div class="yearly">
+        <div class="medium">
+          <div class="bar-chart-yearly"></div>
+        </div>
+        <div class="small-1">
+          <div class="pie-chart-yearly"></div>
+        </div>
+        <div class="small-2">
+          <div class="total-spent">
+            <h4>Total Spent</h4>
+            <p id="yearlySpent"></p>
+          </div>
+          <div class="total-budget">
+            <h4>Total Budget</h4>
+            <p id="yearlyBudget"></p>
+          </div>
+          <div class="remaining">
+            <h4>Remaining</h4>
+            <p id="yearlyRemaining"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="options">
+        <img class="arrow" src="/images/icons/arrow-left.svg" onclick="leftYear()">
+        <input class="yearly-options" id="yearly-options" type="number" min="1980" max="<%= new Date().getFullYear() %>"
+          value="<%= new Date().getFullYear() %>" oninput="drawYearlyCharts()">
+        <img class="arrow" src="/images/icons/arrow-right.svg" onclick="rightYear()">
+      </div>
+
+      <h3>Monthly</h3>
+      <div class="monthly">
+        <div class="medium">
+          <div class="line-chart-monthly"></div>
+        </div>
+        <div class="small-1">
+          <div class="pie-chart-monthly"></div>
+        </div>
+        <div class="small-2">
+          <div class="total-spent">
+            <h4>Total Spent</h4>
+            <p id="monthlySpent"></p>
+          </div>
+          <div class="total-budget">
+            <h4>Total Budget</h4>
+            <p id="monthlyBudget"></p>
+          </div>
+          <div class="remaining">
+            <h4>Remaining</h4>
+            <p id="monthlyRemaining"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="options">
+        <img class="arrow" src="/images/icons/arrow-left.svg" onclick="leftMonth()">
+        <input class="monthly-options" id="monthly-options" type="month" min="1980-01"
+          max="<%= new Date().toISOString().slice(0, 7) %>" value="<%= new Date().toISOString().slice(0, 7) %>"
+          oninput="drawMonthlyCharts()">
+        <img class="arrow" src="/images/icons/arrow-right.svg" onclick="rightMonth()">
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>
+
+<script>
+  const yearly = $("#yearly-options")
+  const monthly = $("#monthly-options")
+
+  const currentYear = parseInt(new Date().getFullYear());
+  const currentMonth = parseInt(new Date().toISOString().slice(5, 7));
+
+  function leftYear() {
+    let store = parseInt(yearly.val()) - 1;
+    if (store < 1980) {
+      store = 1980;
+    }
+    yearly.val(store);
+    drawYearlyCharts();
+  }
+
+  function rightYear() {
+    let store = parseInt(yearly.val()) + 1;
+    if (store > currentYear) {
+      store = currentYear;
+    }
+    yearly.val(store);
+    drawYearlyCharts();
+  }
+
+  function leftMonth() {
+    // Get current month and year as separate values
+    const parts = monthly.val().split("-");
+    let year = parseInt(parts[0]);
+    let month = parseInt(parts[1]) - 1;
+
+    // Handle month overflow (December to November of previous year)
+    if (month < 1) {
+      if (year === 1980) { // Prevent going below minimum year
+        month = 1;
+      } else {
+        month = 12;
+        year--;
+      }
+    }
+
+    // Combine updated year and month into a string
+    const newMonth = year + "-" + (month < 10 ? "0" + month : month);
+
+    // Update input value and call chart update function
+    monthly.val(newMonth);
+    drawMonthlyCharts();
+  }
+
+  function rightMonth() {
+    // Get current month and year as separate values
+    const parts = monthly.val().split("-");
+    let year = parseInt(parts[0]);
+    let month = parseInt(parts[1]) + 1;
+
+    // Handle month overflow (November to December of next year)
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+
+    // Prevent going beyond current year
+    if (year > currentYear || (month > currentMonth && year === currentYear)) {
+      year = currentYear;
+      month = currentMonth;
+    }
+
+    // Combine updated year and month into a string
+    const newMonth = year + "-" + (month < 10 ? "0" + month : month);
+
+    // Update input value and call chart update function
+    monthly.val(newMonth);
+    drawMonthlyCharts();
+  }
+</script>
+
+<script defer>
+
+  // Loading the data
+  var expenses = JSON.parse('<%- JSON.stringify(expenses) %>');
+  var configuration = JSON.parse('<%- JSON.stringify(configuration) %>');
+
+  google.charts.load('current', { 'packages': ['corechart'] });
+
+  // Callback function to draw yearly charts
+  google.charts.setOnLoadCallback(drawYearlyCharts);
+
+  function drawYearlyCharts() {
+
+    // Fetch the selected year from the input
+    const selectedYear = document.querySelector('.yearly-options').value;
+
+    // Fetch the monthly budget for the selected year from configuration
+    const monthlyBudgetForYear = Array.from({ length: 12 }, (_, monthIndex) => {
+      const existingEntry = configuration.monthlyBudget.find(entry => entry.year === parseInt(selectedYear) && entry.month === monthIndex + 1);
+      return existingEntry || { year: parseInt(selectedYear), month: monthIndex + 1, budget: configuration.defaultMonthlyBudget };
+    });
+
+    // Fetch the expenses for the selected year
+    const expensesForYear = expenses.filter(expense => new Date(expense.expenseDate).getFullYear() == selectedYear);
+
+    // Draw the Bar Chart
+    drawBarChart(expensesForYear, monthlyBudgetForYear);
+
+    // Draw the Pie Chart
+    drawPieChart(expensesForYear);
+
+    // Calculate and display total spent, total budget, and remaining budget
+    const totalSpent = expensesForYear.reduce((total, expense) => total + expense.amount, 0);
+    const totalBudget = monthlyBudgetForYear.reduce((total, entry) => total + entry.budget, 0);
+    const remainingBudget = totalBudget - totalSpent;
+
+    // Update the HTML elements with the calculated values
+    document.getElementById('yearlySpent').textContent = totalSpent.toFixed(2);
+    document.getElementById('yearlyBudget').textContent = totalBudget.toFixed(2);
+    document.getElementById('yearlyRemaining').textContent = remainingBudget.toFixed(2);
+  }
+
+  // Function to draw Bar Chart
+  function drawBarChart(expensesForYear, monthlyBudgetForYear) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Month');
+    data.addColumn('number', 'Spent');
+    data.addColumn('number', 'Budget');
+
+    // Create an array to store data for each month
+    const monthlyData = Array.from({ length: 12 }, (_, monthIndex) => ({ spent: 0, budget: 0, month: monthIndex + 1 }));
+
+    // Fill the array with actual data
+    expensesForYear.forEach(expense => {
+      const monthIndex = new Date(expense.expenseDate).getMonth();
+      monthlyData[monthIndex].spent += expense.amount;
+    });
+
+    monthlyBudgetForYear.forEach(entry => {
+      const monthIndex = entry.month - 1; // Month is 1-indexed
+      monthlyData[monthIndex].budget += entry.budget;
+    });
+
+    // Add sorted data to the DataTable
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    months.forEach((month, index) => {
+      data.addRow([month, monthlyData[index].spent, monthlyData[index].budget]);
+    });
+
+    const options = {
+      title: 'Expenses vs Budget',
+      titleTextStyle: { fontSize: 16, textAlign: 'center' },
+      hAxis: { title: 'Month' },
+      vAxis: { title: 'Amount' },
+      seriesType: 'bars',
+      series: {
+        0: { targetAxisIndex: 0 },
+      },
+      backgroundColor: 'transparent',
+    };
+
+    const chart = new google.visualization.ComboChart(document.querySelector('.bar-chart-yearly'));
+    chart.draw(data, options);
+  }
+
+  // Function to draw Pie Chart
+  function drawPieChart(expensesForYear) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Category');
+    data.addColumn('number', 'Amount');
+
+    // Count expenses by category
+    const categoryCounts = {};
+    expensesForYear.forEach(expense => {
+      if (categoryCounts[expense.category]) {
+        categoryCounts[expense.category] += expense.amount;
+      } else {
+        categoryCounts[expense.category] = expense.amount;
+      }
+    });
+
+    // Add data to the DataTable
+    for (const category in categoryCounts) {
+      data.addRow([category, categoryCounts[category]]);
+    }
+
+    const options = {
+      title: 'Category Distribution',
+      backgroundColor: 'transparent',
+      titleTextStyle: { fontSize: 16, textAlign: 'center' },
+    };
+
+    const chart = new google.visualization.PieChart(document.querySelector('.pie-chart-yearly'));
+    chart.draw(data, options);
+  }
+
+
+
+  // Callback function to draw monthly charts
+  google.charts.setOnLoadCallback(drawMonthlyCharts);
+
+  function drawMonthlyCharts() {
+    // Fetch the selected month from the input
+    const selectedMonth = document.querySelector('.monthly-options').value;
+
+    // Fetch the monthly budget for the selected month from configuration
+    const monthlyBudgetForMonth = configuration.monthlyBudget.find(entry => entry.year === parseInt(selectedMonth.split('-')[0]) && entry.month === parseInt(selectedMonth.split('-')[1]));
+    const monthlyBudget = monthlyBudgetForMonth ? monthlyBudgetForMonth.budget : configuration.defaultMonthlyBudget;
+
+    // Fetch the daily expenses for the selected month
+    const dailyExpensesForMonth = expenses.filter(expense => {
+      const expenseDate = new Date(expense.expenseDate);
+      return expenseDate.getMonth() + 1 === parseInt(selectedMonth.split('-')[1]) && expenseDate.getFullYear() === parseInt(selectedMonth.split('-')[0]);
+    });
+
+    // Draw the Line Chart with Cumulative Frequency and Reference Line
+    drawLineChart(dailyExpensesForMonth, monthlyBudget);
+
+    // Draw the Pie Charts
+    drawMPieCharts(dailyExpensesForMonth);
+
+    // Calculate and display total spent, total budget, and remaining budget
+    const totalSpentMonth = dailyExpensesForMonth.reduce((total, expense) => total + expense.amount, 0);
+    const totalBudgetMonth = monthlyBudget;
+    const remainingMonth = totalBudgetMonth - totalSpentMonth;
+
+    // Fill the HTML elements with the calculated values
+    document.getElementById('monthlySpent').textContent = totalSpentMonth.toFixed(2);
+    document.getElementById('monthlyBudget').textContent = totalBudgetMonth.toFixed(2);
+    document.getElementById('monthlyRemaining').textContent = remainingMonth.toFixed(2);
+  }
+
+  // Function to draw Line Chart with Cumulative Frequency
+  function drawLineChart(dailyExpensesForMonth, monthlyBudget) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Day');
+    data.addColumn('number', 'Cumulative Spent');
+    data.addColumn('number', 'Budget');
+
+    // Fetch the selected month and year from the input
+    const selected = document.querySelector('.monthly-options').value;
+    const selectedMonth = parseInt(selected.split('-')[1]);
+    const selectedYear = parseInt(selected.split('-')[0]);
+
+    // Determine the number of days in the selected month
+    const lastDayOfMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+
+    // Create an array to store data for each day
+    const dailyData = Array.from({ length: lastDayOfMonth }, (_, dayIndex) => ({ spent: 0, day: dayIndex + 1 }));
+
+    // Create an array to store the budget for each day
+    const budgetLine = Array.from({ length: lastDayOfMonth }, (_, dayIndex) => ({ budget: monthlyBudget, day: dayIndex + 1 }));
+
+    // Fill the array with actual data
+    dailyExpensesForMonth.forEach(expense => {
+      const dayIndex = new Date(expense.expenseDate).getDate();
+      dailyData[dayIndex - 1].spent += expense.amount;
+    });
+
+    // Calculate cumulative frequency
+    let cumulativeSpent = 0;
+    dailyData.forEach(dayData => {
+      cumulativeSpent += dayData.spent;
+      data.addRow([dayData.day.toString(), cumulativeSpent, budgetLine[dayData.day - 1].budget]);
+    });
+
+    const options = {
+      title: 'Cumulative Daily Expenses',
+      titleTextStyle: { fontSize: 16, textAlign: 'center' },
+      hAxis: { title: 'Day' },
+      vAxis: { title: 'Cumulative Amount' },
+      backgroundColor: 'transparent',
+    };
+
+    const chart = new google.visualization.LineChart(document.querySelector('.line-chart-monthly'));
+    chart.draw(data, options);
+  }
+
+
+  // Draw the Pie Charts
+  function drawMPieCharts(dailyExpensesForMonth) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Category');
+    data.addColumn('number', 'Amount');
+
+    // Count expenses by category
+    const categoryCounts = {};
+    dailyExpensesForMonth.forEach(expense => {
+      if (categoryCounts[expense.category]) {
+        categoryCounts[expense.category] += expense.amount;
+      } else {
+        categoryCounts[expense.category] = expense.amount;
+      }
+    });
+
+    // Add data to the DataTable
+    for (const category in categoryCounts) {
+      data.addRow([category, categoryCounts[category]]);
+    }
+
+    const options = {
+      title: 'Category Distribution',
+      backgroundColor: 'transparent',
+      titleTextStyle: { fontSize: 16, textAlign: 'center' },
+    };
+
+    const chart = new google.visualization.PieChart(document.querySelector('.pie-chart-monthly'));
+    chart.draw(data, options);
+  }
+
+
+</script>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://127.0.0.1:3000/expenses -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Expense Guard | Expenses</title>
+    <link rel="icon" href="http://127.0.0.1:3000/images/logo-icon.png" type="image/png">
+    <link rel="stylesheet" href="./Expense Guard _ Expenses_files/sidebar.css">
+    <link rel="stylesheet" href="./Expense Guard _ Expenses_files/expenses.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+</head>
+
+<body cz-shortcut-listen="true">
+    <div class="sidebar">
+        <div class="header">
+            <img src="./Expense Guard _ Expenses_files/logo.png">
+        </div>
+        <div class="menu">
+            <ul>
+                <li>
+                    <a href="http://127.0.0.1:3000/dashboard"><img src="./Expense Guard _ Expenses_files/dashboard_white.png">Dashboard</a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1:3000/statistics"><img src="./Expense Guard _ Expenses_files/statistics_white.png">Statistics</a>
+                </li>
+                <li>
+                    <a class="active"><img src="./Expense Guard _ Expenses_files/expenses_dark.svg">Expenses</a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1:3000/adjust"><img src="./Expense Guard _ Expenses_files/adjust_white.png">Adjust</a>
+                </li>
+            </ul>
+        </div>
+        <div class="footer">
+            <div class="menu">
+                <ul>
+                    <li>
+                        <a href="http://127.0.0.1:3000/logout"><img src="./Expense Guard _ Expenses_files/profile_white.png">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Start content here -->
+        <div class="top">
+            <div class="heading">
+                <h1>Expenses</h1>
+            </div>
+            <div class="buttons">
+                <button>Filter <b>x</b></button>
+                <button><b>+</b> Add Expense</button>
+            </div>
+        </div>
+        <div class="filter">
+            <p>Filter</p>
+            <div class="field-area">
+                <div class="filter-field">
+                    <label for="category">Category</label><br>
+                    <select name="category" id="category">
+                        <option value="">Select an option</option>
+                        <option value="food">Food</option>
+                        <option value="housing">Housing</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="health">Health</option>
+                        <option value="education">Education</option>
+                        <option value="personal-care">Personal Care</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="from-date">From Date</label><br>
+                    <input type="date" name="from-date" id="from-date" max="2024-02-06" onchange="setDate()">
+                </div>
+                <div class="filter-field">
+                    <label for="to-date">To Date</label><br>
+                    <input type="date" name="to-date" id="to-date" max="2024-02-06" onchange="setDate()">
+                </div>
+            </div>
+        </div>
+        <p>Hello</p><table class="table">
+            <tbody>
+                <tr>
+                    <th style="width: 20%">Category</th>
+                    <th style="width: 15%">Expense Date</th>
+                    <th style="width: 15%">Amount</th>
+                    <th style="width: 40%">Description</th>
+                    
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+
+
+
+
+
+<script>
+    function setDate() {
+        var fromDateInput = document.getElementById("from-date");
+        var toDateInput = document.getElementById("to-date");
+        var today = new Date().toISOString().split('T')[0];
+        // Set max date for "From Date" to the selected "To Date" or today if not set
+        fromDateInput.setAttribute('max', toDateInput.value || today);
+        // Set min date for "To Date" to the selected "From Date" or an empty string if not set
+        toDateInput.setAttribute('min', fromDateInput.value || "");
+    }
+</script></body></html>

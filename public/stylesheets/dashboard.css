@@ -1,0 +1,220 @@
+.top {
+  display: flex;
+  padding: 10px;
+}
+
+.cards{
+  display: flex;
+  height: 100%;
+  margin: 15px 0;
+  /* background-color: aqua; */
+}
+
+.left{
+  background-color: #c4c4c4;
+  margin-right: 5px;
+  padding: 20px;
+  width: 40%;
+  border-radius: 5px;
+  /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), -2px -2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.right{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  width: 60%;
+}
+
+.up{
+  background-color: rgb(75, 75, 75);
+  color: white;
+  margin-bottom: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  height: 50%;
+}
+
+.down{
+  display: flex;
+  margin-top: 5px;
+  height: 50%;
+}
+
+.start{
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(130, 130, 130);
+  color: white;
+  margin-right: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+}
+
+.end{
+  display: flex;
+  flex-direction: column;
+  background-color: #d5d5d5;
+  margin-left: 5px;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+}
+
+
+
+
+/* For table */
+
+.table-area{
+  margin-top: 15px;
+  border-radius: 5px;
+  /* background-color: aqua; */
+}
+
+.table{
+  width: 100%;
+  text-align: center;
+  padding-top: 13px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+thead{
+  border-bottom: 1px solid #C4C4C4;
+}
+
+tbody{
+  display: flex;
+  flex-direction: column;
+  padding: 13px 0 0;
+}
+
+td{
+  font-size: 16px;
+  padding: 5px 0px;
+}
+
+tr{
+  text-align: center;
+  display: table;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: rgba(130, 130, 130, 0.1);
+  /* background-color: rgba(250, 250, 210, 0.5); */
+  border-radius: 5px;
+}
+
+
+
+
+/* Monthly Spending Chart */
+.monthly-spending-chart{
+  margin-top: 15px;
+  background-color: rgba(20, 20, 20, 0.7);
+  width: 100%;
+  height: 85%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+
+
+
+/* Prediction Analysis */
+.prediction{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  margin: 15px 0 7px;
+  height: 100%;
+  background-color: rgba(20, 20, 20, 0.4);
+  border-radius: 5px;
+}
+
+.prediction-area{
+  height: 33%;
+}
+
+.prediction-area p{
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+
+
+/* Budget Metrics */
+.metrics{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  margin: 15px 0 7px;
+  height: 100%;
+  background-color: #F2F2F2;
+  border-radius: 5px;
+}
+
+.metrics-area{
+  height: 33%;
+}
+.metrics-area p{
+  font-size: 30px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+
+/* Prediction Step Line */
+.dots-container {
+  display: flex;
+  width: 75%;
+  margin: 7px auto 6px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  margin: 0 10px;
+  display: inline-block;
+  position: relative;
+}
+
+.dots-container {
+  display: flex;
+  align-items: center;
+}
+
+.labels-container{
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.labels-container pre {
+  font-size: 10px;
+}
+
+.on-track { background-color: #00ff00; }
+.approaching-limit { background-color: #ffff00; }
+.exceeding-budget { background-color: #ff0000; }
+
+.inner-dot {
+  width: 2px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 50%;
+}

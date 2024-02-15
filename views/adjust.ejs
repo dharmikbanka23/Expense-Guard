@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Expense Guard | Adjust</title>
+  <link rel="icon" href="/images/logo-icon.png" type="image/x-icon">
+  <link rel='stylesheet' href='/stylesheets/sidebar.css'>
+  <link rel='stylesheet' href="/stylesheets/adjust.css">
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="header">
+      <img src="/images/logo.png">
+    </div>
+    <div class="menu">
+      <ul>
+        <li>
+          <a href="/dashboard"><img src="/images/icons/dashboard_white.png">Dashboard</a>
+        </li>
+        <li>
+          <a href="/statistics"><img src="/images/icons/statistics_white.png">Statistics</a>
+        </li>
+        <li>
+          <a href="/expenses"><img src="/images/icons/expenses_white.png">Expenses</a>
+        </li>
+        <li>
+          <a class="active"><img src="/images/icons/adjust_dark.svg">Adjust</a>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      <div class="menu">
+        <ul>
+          <li>
+            <a href="/logout"><img src="/images/icons/profile_white.png">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start content here -->
+  <div class="content">
+    <!-- Start content here -->
+    <div class="top">
+      <h1>Adjust</h1>
+    </div>
+
+    <div class="configurations">
+
+      <div class="full-box">
+        <h3>Default Budgets</h3>
+        <div class="row">
+
+          <div class="col-half">
+            <form action="/adjust/defaultMonthlyBudget" method="POST">
+              <label for="defaultMonthlyBudget">Default Monthly Budget: </label>
+              <input class="budget-input" type="number" min="0" max="999999999999999" id="defaultMonthlyBudget"
+                name="defaultMonthlyBudget" placeholder="<%= defaultMonthlyBudget %>" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+          <div class="col-half">
+            <form action="/adjust/defaultYearlyBudget" method="POST">
+              <label for="defaultYearlyBudget">Default Yearly Budget: </label>
+              <input class="budget-input" type="number" min="0" max="999999999999999" id="defaultYearlyBudget"
+                name="defaultYearlyBudget" placeholder="<%= defaultYearlyBudget %>" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="full-box">
+        <h3>Current Budgets</h3>
+        <div class="row">
+
+          <div class="col-half">
+            <form action="/adjust/currentMonthlyBudget" method="POST">
+              <label for="currentMonthlyBudget">Current Monthly Budget: </label>
+              <input class="budget-input-small-first" type="text" value="<%= currentMonth %>" name="currentMonth"
+                disabled>
+              <input class="budget-input-small-second" type="number" min="0" max="999999999999999"
+                id="currentMonthlyBudget" name="currentMonthlyBudget" placeholder="<%= currentMonthlyBudget %>" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+          <div class="col-half">
+            <form action="/adjust/currentYearlyBudget" method="POST">
+              <label for="currentYearlyBudget">Current Yearly Budget: </label>
+              <input class="budget-input-small-first" type="number" value="<%= currentYear %>" name="currentYear"
+                disabled>
+              <input class="budget-input-small-second" type="number" min="0" max="999999999999999"
+                id="currentYearlyBudget" name="currentYearlyBudget" placeholder="<%= currentYearlyBudget %>" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="full-box">
+        <h3>Customize Budgets</h3>
+        <div class="row">
+
+          <div class="col-half">
+            <form action="/adjust/customMonthlyBudget" method="POST">
+              <label for="customMonthlyBudget">Customize Monthly Budget: </label>
+              <input class="budget-input-vsmall-first" type="number" min="1980" max="<%= currentYear %>"
+                name="customYear" placeholder="Year" required>
+
+              <select class="budget-input-vsmall-second" name="customMonth" required>
+                <option value="" disabled selected></option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+              </select>
+
+              <input class="budget-input-vsmall-third" type="number" min="0" max="999999999999999"
+                id="customMonthlyBudget" name="customMonthlyBudget" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+          <div class="col-half">
+            <form action="/adjust/customYearlyBudget" method = "POST">
+              <label for="customYearlyBudget">Customize Yearly Budget: </label>
+              <input class="budget-input-vvsmall-first" type="number" min="1980" max="<%= currentYear %>"
+                name="customYear" placeholder="Year" required>
+              <input class="budget-input-vvsmall-second" type="number" min="0" max="999999999999999"
+                id="customYearlyBudget" name="customYearlyBudget" required>
+              <button type="submit" class="setButton">Set</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="full-box">
+        <h3>Notification Settings</h3>
+        <div class="row">
+
+          <div class="col-half">
+            <form action="/adjust/notificationFrequency" method="POST">
+              <label class="notifications-label">Notification Frequency: </label>
+            
+              <input class="shape" type="radio" name="frequency" id="daily" value="daily" <% if (notificationFrequency === 'daily') { %>checked<% } %> required>
+              <label class="label" for="daily">Daily</label>
+            
+              <input class="shape" type="radio" name="frequency" id="weekly" value="weekly" <% if (notificationFrequency === 'weekly') { %>checked<% } %> required>
+              <label class="label" for="weekly">Weekly</label>
+            
+              <button type="submit" class="setButton">Set</button>
+            </form>            
+          </div>
+
+          <div class="col-half">
+            <form action="/adjust/notificationChannels" method="POST">
+              <label class="notifications-label">Notification Channels: </label>
+            
+              <input class="shape" type="checkbox" name="push" id="push" value="push" <% if (notificationChannels.includes('push')) { %>checked<% } %>>
+              <label class="label" for="push">Push</label>
+            
+              <input class="shape" type="checkbox" name="email" id="email" value="email" <% if (notificationChannels.includes('email')) { %>checked<% } %>>
+              <label class="label" for="email">Email</label>
+            
+              <button type="submit" class="setButton">Set</button>
+            </form>            
+          </div>          
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

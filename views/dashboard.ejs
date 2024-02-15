@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Expense Guard | Dashboard</title>
+  <link rel="icon" href="/images/logo-icon.png" type="image/x-icon">
+  <link rel='stylesheet' href='/stylesheets/sidebar.css'>
+  <link rel='stylesheet' href='/stylesheets/dashboard.css'>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="header">
+      <img src="/images/logo.png">
+    </div>
+    <div class="menu">
+      <ul>
+        <li>
+          <a class="active"><img src="/images/icons/dashboard_dark.svg">Dashboard</a>
+        </li>
+        <li>
+          <a href="/statistics"><img src="/images/icons/statistics_white.png">Statistics</a>
+        </li>
+        <li>
+          <a href="/expenses"><img src="/images/icons/expenses_white.png">Expenses</a>
+        </li>
+        <li>
+          <a href="/adjust"><img src="/images/icons/adjust_white.png">Adjust</a>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      <div class="menu">
+        <ul>
+          <li>
+            <a href="/logout"><img src="/images/icons/profile_white.png">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start content here -->
+  <div class="content">
+    <!-- Start content here -->
+    <div class="top">
+      <h1>Dashboard</h1>
+    </div>
+    <div class="cards">
+      <div class="left">
+        <h3>Recent Expenses</h3>
+
+        <div class="table-area">
+          <table class="table">
+            <thead>
+              <tr>
+                <th data-sort="string" style="width: 40%">Category</th>
+                <th data-sort="string" style="width: 30%">Expense Date</th>
+                <th data-sort="int" style="width: 30%">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let expense of expenseRecord) { %>
+                <tr id="<%= expense._id %>">
+                  <td style="width: 40%">
+                    <%= expense.category %>
+                  </td>
+                  <td style="width: 30%">
+                    <%= expense.expenseDate.toISOString().split('T')[0] %>
+                  </td>
+                  <td style="width: 30%">
+                    <%= expense.amount %>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="right">
+        <div class="up">
+          <h3>Monthly Spending Overview</h3>
+          <div class="monthly-spending-chart"></div>
+        </div>
+        <div class="down">
+          <div class="start">
+            <h3>Expense Analysis</h3>
+            <div class="prediction">
+              <div class="prediction-area">
+                <h4>Monthly Total Prediction</h4>
+                <p id="monthly-prediction"></p>
+              </div>
+              <div class="prediction-area">
+                <h4>Yearly Total Prediction</h4>
+                <p id="yearly-prediction"></p>
+              </div>
+
+              <div class="prediction-area">
+                <h4>Performance Check</h4>
+                <div class="dots-container">
+                  <div class="dot" id="dot-on-track"></div>
+                  <div class="dot" id="dot-approaching-limit"></div>
+                  <div class="dot" id="dot-exceeding-budget"></div>
+                </div>
+                <div class="labels-container">
+                  <pre>        On                      Approaching                Exceeding</pre>
+                  <pre>   Track                           Limit                          Budget</pre>
+                </div>
+                <p id="performance-check" style="display: none;"></p>
+              </div>
+
+            </div>
+          </div>
+          <div class="end">
+            <h3>Budget Metrics</h3>
+            <div class="metrics">
+              <div class="metrics-area">
+                <h4>Monthly Total Spent</h4>
+                <p id="monthly-spent"></p>
+              </div>
+              <div class="metrics-area">
+                <h4>Monthly Budget Set</h4>
+                <p id="monthly-budget"></p>
+              </div>
+              <div class="metrics-area">
+                <h4>Remaining Sum</h4>
+                <p id="remaining-sum"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+<script defer>
+  var expenses = JSON.parse('<%- JSON.stringify(expenses) %>');
+  var yearlyExpenses = JSON.parse('<%- JSON.stringify(yearlyExpenses) %>');
+  var configuration = JSON.parse('<%- JSON.stringify(configuration) %>');
+
+  google.charts.load('current', { 'packages': ['corechart'] });
+
+  // Callback function to draw monthly charts
+  google.charts.setOnLoadCallback(drawMonthlyCharts);
+
+  function drawMonthlyCharts() {
+    // Fetch the current month from the date
+    const today = new Date();
+
+    // Fetch the current month from the date
+    const selectedMonth = new Date().toISOString().slice(0, 7);
+
+    // Fetch the monthly budget for the selected month from configuration
+    const monthlyBudgetForMonth = configuration.monthlyBudget.find(entry => entry.year === parseInt(selectedMonth.split('-')[0]) && entry.month === parseInt(selectedMonth.split('-')[1]));
+    const monthlyBudget = monthlyBudgetForMonth ? monthlyBudgetForMonth.budget : configuration.defaultMonthlyBudget;
+
+    // Directly use the expenses array as all entries are for the selected month
+    const dailyExpensesForMonth = expenses;
+
+    // Direct use the yearly expenses array
+    const dailyExpensesForYear = yearlyExpenses;
+
+    // Draw the Line Chart with Cumulative Frequency and Reference Line
+    drawLineChart(dailyExpensesForMonth, monthlyBudget);
+
+    // Calculate and display total spent, total budget, and remaining budget
+    const totalSpentMonth = dailyExpensesForMonth.reduce((total, expense) => total + expense.amount, 0);
+    const totalYearlySpent = dailyExpensesForYear.reduce((total, expense) => total + expense.amount, 0);
+    const totalBudgetMonth = monthlyBudget;
+    const remainingMonth = totalBudgetMonth - totalSpentMonth;
+
+    // Calculate prediction rates
+    const monthlyPredictionRate = (totalSpentMonth / today.getDate()) * new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+    const yearlyPredictionRate = (totalYearlySpent / today.getDOY()) * (isLeapYear(today.getFullYear()) ? 366 : 365);
+
+    // Calculate health check
+    calculateHealthCheck(totalBudgetMonth, monthlyPredictionRate);
+
+    // Fill the HTML elements with the calculated values
+    document.getElementById('monthly-spent').textContent = totalSpentMonth.toFixed(2);
+    document.getElementById('monthly-budget').textContent = totalBudgetMonth.toFixed(2);
+    document.getElementById('remaining-sum').textContent = remainingMonth.toFixed(2);
+
+    // Fill the HTML elements
+    document.getElementById('monthly-prediction').textContent = monthlyPredictionRate.toFixed(2);
+    document.getElementById('yearly-prediction').textContent = yearlyPredictionRate.toFixed(2);
+  }
+
+  // Function to draw Line Chart with Cumulative Frequency
+  function drawLineChart(dailyExpensesForMonth, monthlyBudget) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Day');
+    data.addColumn('number', 'Total Spent');
+    data.addColumn('number', 'Budget');
+
+    // Fetch the current month and year
+    const today = new Date();
+    const selectedMonth = today.getMonth() + 1;
+    const selectedYear = today.getFullYear();
+
+    // Calculate the number of days passed in the current month
+    const lastDayOfMonth = today.getDate();
+
+    // Create an array to store data for each day
+    const dailyData = Array.from({ length: lastDayOfMonth }, (_, dayIndex) => ({ spent: 0, day: dayIndex + 1 }));
+
+    // Create an array to store the budget for each day
+    const budgetLine = Array.from({ length: lastDayOfMonth }, (_, dayIndex) => ({ budget: monthlyBudget, day: dayIndex + 1 }));
+
+    // Fill the array with actual data for the days passed
+    dailyExpensesForMonth.forEach(expense => {
+      const expenseDate = new Date(expense.expenseDate);
+      if (
+        expenseDate.getMonth() + 1 === selectedMonth &&
+        expenseDate.getFullYear() === selectedYear &&
+        expenseDate.getDate() <= lastDayOfMonth
+      ) {
+        dailyData[expenseDate.getDate() - 1].spent += expense.amount;
+      }
+    });
+
+    // Calculate cumulative frequency for the days passed
+    let cumulativeSpent = 0;
+    dailyData.forEach(dayData => {
+      cumulativeSpent += dayData.spent;
+      data.addRow([dayData.day.toString(), cumulativeSpent, budgetLine[dayData.day - 1].budget]);
+    });
+
+    const options = {
+      title: 'Cumulative Daily Expenses',
+      titleTextStyle: { fontSize: 16, textAlign: 'center', color: '#FFFFFF' },
+      hAxis: {
+        title: 'Day',
+        titleTextStyle: { color: '#FFFFFF' },
+        textStyle: { color: '#FFFFFF' },
+      },
+      vAxis: {
+        title: 'Cumulative Amount',
+        titleTextStyle: { color: '#FFFFFF' },
+        textStyle: { color: '#FFFFFF' },
+      },
+      legend: { textStyle: { color: '#FFFFFF' } },
+      backgroundColor: 'transparent',
+      colors: ['#6EC8F6', '#D74727'],
+    };
+
+    const chart = new google.visualization.LineChart(document.querySelector('.monthly-spending-chart'));
+    chart.draw(data, options);
+  }
+
+  // Function to get the day of the year (DOY)
+  Date.prototype.getDOY = function () {
+    const start = new Date(this.getFullYear(), 0, 0);
+    const diff = this - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+    return dayOfYear;
+  };
+
+  // Function to check if a year is a leap year
+  function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
+
+  function calculateHealthCheck(totalBudget, monthlyPredictionSpending) {
+    const spentPercentage = (monthlyPredictionSpending / totalBudget) * 100;
+    const dotOnTrack = document.getElementById('dot-on-track');
+    const dotApproachingLimit = document.getElementById('dot-approaching-limit');
+    const dotExceedingBudget = document.getElementById('dot-exceeding-budget');
+
+    if (spentPercentage <= 80) {
+      dotOnTrack.style.backgroundColor = "green";
+      dotOnTrack.style.boxShadow = "inset 0 0 1px 1px white";
+    } else if (spentPercentage <= 95) {
+      dotApproachingLimit.style.backgroundColor = "yellow";
+      dotApproachingLimit.style.boxShadow = "inset 0 0 1px 1px white";
+    } else {
+      dotExceedingBudget.style.backgroundColor = "red";
+      dotExceedingBudget.style.boxShadow = "inset 0 0 1px 1px white";
+    }
+  }
+
+</script>
+
+<!-- Checking Push Notification -->
+<script defer>
+  var expenses = JSON.parse('<%- JSON.stringify(expenses) %>');
+  var configuration = JSON.parse('<%- JSON.stringify(configuration) %>');
+
+  const today = new Date();
+  const notificationFrequency = configuration.notificationFrequency;
+  const notificationTrack = configuration.notificationTrack ? new Date(configuration.notificationTrack) : undefined;
+
+  if (notificationFrequency === 'daily') {
+    // Check if notification was already sent today
+    if (notificationTrack && isSameDate(today, notificationTrack)) { }
+    else {
+      // Send push notification if user prefers push
+      if (configuration.notificationChannels.includes('push')) {
+        // Implement push notification logic
+        sendPushNotificationData(configuration, expenses);
+      }
+    }
+
+  }
+  else if (notificationFrequency === 'weekly') {
+    // Check if today is within the current week
+    if (notificationTrack && isSameWeek(today, notificationTrack)) { }
+    else {
+      // Send push notification if user prefers push
+      if (configuration.notificationChannels.includes('push')) {
+        // Implement push notification logic
+        sendPushNotificationData(configuration, expenses);
+      }
+    }
+  }
+
+  function sendPushNotificationData(configuration, expenses) {
+    // Fetch the current date
+    const today = new Date();
+
+    // Fetch the current month from the date
+    const selectedMonth = new Date().toISOString().slice(0, 7);
+
+    // Fetch the monthly budget for the selected month from configuration
+    const monthlyBudgetForMonth = configuration.monthlyBudget.find(entry => entry.year === parseInt(selectedMonth.split('-')[0]) && entry.month === parseInt(selectedMonth.split('-')[1]));
+    const monthlyBudget = monthlyBudgetForMonth ? monthlyBudgetForMonth.budget : configuration.defaultMonthlyBudget;
+
+    // Directly use the expenses array as all entries are for the selected month
+    const dailyExpensesForMonth = expenses;
+
+    // Calculate and display total spent, total budget, and remaining budget
+    const totalSpentMonth = dailyExpensesForMonth.reduce((total, expense) => total + expense.amount, 0);
+
+    // Calculate prediction rates
+    const monthlyPredictionSpending = (totalSpentMonth / today.getDate()) * new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+
+    // Get the spent percentage
+    const spentPercentage = (monthlyPredictionSpending / monthlyBudget) * 100;
+
+    let notificationMessage;
+
+    if (spentPercentage <= 80) {
+      notificationMessage = "Your spending is within a healthy range. Keep up the good work!";
+    } else if (spentPercentage <= 95) {
+      notificationMessage = "Your spending is approaching the budget limit. Consider reviewing your expenses.";
+    } else {
+      notificationMessage = "Your spending is exceeding the budget. It's essential to reassess and adjust your financial plan.";
+    }
+
+    const notificationOptions = {
+      body: notificationMessage,
+      icon: '/images/logo-icon.png',
+      timeout: 5000,
+    };
+
+    sendPushNotification(notificationOptions);
+  }
+
+  function sendPushNotification(data) {
+    Notification.requestPermission() // Resolves immediately
+      .then((perm) => {
+        if (perm === "granted") {
+          const notification = new Notification("Expense Guard", data);
+          notification.addEventListener("error", (e) => {
+            alert("error");
+          })
+        } else if (perm === "denied") {
+          alert("Notifications are denied. Please enable them in your browser settings.");
+        }
+      })
+  }
+
+  // Function to check if two dates are on the same day
+  function isSameDate(date1, date2) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
+
+  // Function to check if two dates are in the same week (Monday to Sunday)
+  function isSameWeek(date1, date2) {
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const diffDays = Math.round(Math.abs((date1 - date2) / oneDay));
+
+    // Get the day of the week for each date (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    const dayOfWeek1 = date1.getDay();
+    const dayOfWeek2 = date2.getDay();
+
+    // Check if the difference in days is less than 7 and the day of the week is the same
+    return diffDays < 7 && (dayOfWeek1 <= dayOfWeek2 || dayOfWeek2 === 0);
+  }
+
+</script>

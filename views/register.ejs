@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Guard | Register</title>
+    <link rel="icon" href="/images/logo-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="stylesheets/login-register.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="right-container">
+            <img src="/images/register.jpg">
+        </div>
+        <div class="left-container">
+            <div class="left-container-logo">
+                <img src="/images/logo_black.png">
+            </div>
+            <div class="left-container-text">
+                <h1>Let's get started!</h1>
+                <p>Monitor your spending habits and maintain a clear view of your financial landscape</p>
+            </div>
+            <!-- Message from server -->
+            <% if (message) { %>
+                <div class="message">
+                    <p><%= message %></p>
+                </div>
+            <% } %>
+            <form action="/register" method="POST">
+                <input type="text" placeholder="Username" name="username" id="username" required oninput="valUser()"><br>
+                <input type="email" placeholder="Email" name="email" id="email" required><br>
+                <input type="password" placeholder="Password" name="password" id="password" required oninput="valPass()"><br>
+                <input type="password" placeholder="Confirm Password" name="confirm_password" id="confirm_password" required oninput="valConPass()"><br>
+                <input type="submit" value="Register"><br>
+                <p class="switch-tabs">Already a member? <a href="/login">Login here</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    // Validate Username
+    function valUser() {
+        const user = document.getElementById('username').value;
+        const regex = /^[a-zA-Z][a-zA-Z0-9]*$/;
+
+        if (!regex.test(user)) {
+            document.getElementById('username').setCustomValidity('Username should start with a letter, followed by letters or numbers');
+        } else {
+            document.getElementById('username').setCustomValidity('');
+        }
+    }
+
+
+    // Validate Password
+    function valPass() {
+        const pass = document.getElementById('password').value;
+        if (pass.length < 8 || pass.length > 15) {
+            document.getElementById('password').setCustomValidity('Password must be between 8 and 15 characters');
+        }
+        else {
+            document.getElementById('password').setCustomValidity('');
+        }
+    }
+
+    // Validate Confirm Password
+    function valConPass() {
+        const pass = document.getElementById('password').value;
+        const conpass = document.getElementById('confirm_password').value;
+        if (pass != conpass) {
+            document.getElementById('confirm_password').setCustomValidity('Password must match the above');
+        }
+        else {
+            document.getElementById('confirm_password').setCustomValidity('');
+        }
+    }
+</script>

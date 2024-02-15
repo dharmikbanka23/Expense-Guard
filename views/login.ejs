@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Guard | Login</title>
+    <link rel="icon" href="/images/logo-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="stylesheets/login-register.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-container">
+            <div class="left-container-logo">
+                <img src="/images/logo_black.png">
+            </div>
+            <div class="left-container-text">
+                <h1>Welcome back!</h1>
+                <p>Effortlessly manage your finances and stay in control of your expenses</p>
+            </div>
+            <!-- Message from server -->
+            <% if (message) { %>
+                <div class="message">
+                    <p><%= message %></p>
+                </div>
+            <% } %>
+            <form action="/login" method="POST">
+                <input type="text" placeholder="Username/Email" name="user" id="user" oninput="valUser()" required><br>
+                <input type="password" placeholder="Password" name="password" id="password" oninput="valPass()" required><br>
+                <a class= "forgot-password" href="#">Forgot Password?</a><br>
+                <input type="submit" value="Login"><br>
+                <p class="switch-tabs">Not yet a member? <a style="font-size: 16px;" href="/register">Register here</a></p>
+            </form>
+        </div>
+        <div class="right-container">
+            <img src="/images/login.jpg">
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    // Validate Username
+    function valUser() {
+        const user = document.getElementById('user').value;
+        const regexUsername = /^[a-zA-Z][a-zA-Z0-9]*$/;
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+(\.[^\s@]+)*$/;
+
+        if (!regexUsername.test(user) && !regexEmail.test(user)) {
+            document.getElementById('user').setCustomValidity('Please enter a valid username or email');
+        } else {
+            document.getElementById('user').setCustomValidity('');
+        }
+    }
+
+    // Validate Password
+    function valPass() {
+        const pass = document.getElementById('password').value;
+        if (pass.length < 8 || pass.length > 15) {
+            document.getElementById('password').setCustomValidity('Password must be between 8 and 15 characters');
+        }
+        else {
+            document.getElementById('password').setCustomValidity('');
+        }
+    }
+</script>
