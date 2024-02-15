@@ -45,7 +45,8 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
    ```
 
 4. **Configure the environment variables:**
-Create a .env file in the root directory and add necessary configurations.
+
+   Create a .env file in the root directory and add necessary configurations.
 
    ```.env
    JWT_SECRET='YOUR_JWT_TOKEN'
@@ -59,4 +60,4 @@ Create a .env file in the root directory and add necessary configurations.
    AWS_S3_BUCKET_NAME='YOUR_S3_BUCKET_NAME'
    ```
 
-5. **Run the application:**
+6. **Run the application:**
