@@ -104,14 +104,9 @@ function isSameDate(date1, date2) {
 // Function to check if two dates are in the same week (Monday to Sunday)
 function isSameWeek(date1, date2) {
   const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-  const diffDays = Math.round(Math.abs((date1 - date2) / oneDay));
+  const diffDays = Math.abs(Math.round((date2 - date1) / oneDay));
 
-  // Get the day of the week for each date (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-  const dayOfWeek1 = date1.getDay();
-  const dayOfWeek2 = date2.getDay();
-
-  // Check if the difference in days is less than 7 and the day of the week is the same
-  return diffDays < 7 && (dayOfWeek1 <= dayOfWeek2 || dayOfWeek2 === 0);
+  return diffDays < 7;
 }
 
 module.exports = sendNotification;
