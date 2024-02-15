@@ -61,3 +61,46 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
    ```
 
 6. **Run the application:**
+   ```bash
+   npm start
+   ```
+
+   Visit http://localhost:4000 to access the Expense Guard application.
+
+## Usage
+
+1. **Sign up or log in to your account:**
+   
+   Visit the application's sign-up or login page to access your account. If you don't have an account, you'll need to sign up to get started.
+
+2. **Add your expenses:**
+   
+   Once logged in, navigate to the expense entry section. Provide details such as the amount spent, category, date of the expense, bill and description. Save the entry.
+
+3. **View reports:**
+   
+   Explore the graphical reports section to visualize your spending patterns. Charts and graphs will help you understand where your money is going.
+
+4. **Access dashboard:**
+
+   Get all the important data at one place for better visualization. View the predictive analysis of your spendings.
+
+5. **Track your spending patterns:**
+   
+   Regularly check the reports to track your expenses against the set budget. Adjust your spending habits accordingly to stay within your financial goals.
+
+6. **Global chat:**
+
+   In the dashboard, you could open up the chat feature and communicate with other users guarding their expenses.
+
+7. **Logout:**
+   
+   For security, always log out of your account when you're done using the application. This ensures that your financial information remains secure.
+
+## Contributors
+
+- [Banka Dharmik](https://github.com/dharmikbanka23)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
