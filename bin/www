@@ -5,14 +5,15 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('expense-tracker:server');
+var debug = require('debug')('express-test:server');
 var http = require('http');
+var socketIO = require('socket.io'); // Add this line to import socket.io
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 /**
@@ -21,6 +22,23 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+// Set up socket.io to listen on the HTTP server
+var io = socketIO(server);
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Handle chat messages
+  socket.on('chatMessage', (message) => {
+    // Broadcast the message to all connected clients
+    io.emit('chatMessage', message);
+  });
+
+  // Handle disconnect
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
