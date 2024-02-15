@@ -13,10 +13,12 @@ connectDB();
 
 // set up the routes
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var expensesRouter = require('./routes/expenses');
 var statisticsRouter = require('./routes/statistics');
 var adjustRouter = require('./routes/adjust');
+var loginRouter = require('./routes/login');
+var registerRouter = require('./routes/register');
+var logoutRouter = require('./routes/logout');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +31,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
+app.use('/logout',logoutRouter);
 app.use('/expenses', expensesRouter);
 app.use('/statistics', statisticsRouter);
 app.use('/adjust', adjustRouter);

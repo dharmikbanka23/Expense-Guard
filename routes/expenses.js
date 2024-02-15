@@ -2,6 +2,7 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var express = require('express');
 var router = express.Router();
+var authenticate = require('../middleware/authenticateUser');
 require('dotenv').config();
 
 var userModel = require('../models/userModel'); //Users collection
@@ -151,14 +152,4 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 
-
-const authenticate = function (cookies) {
-  try {
-    const decoded = jwt.verify(cookies.token, process.env.JWT_SECRET);
-    return true;
-  }
-  catch (err) {
-    return false;
-  }
-}
 module.exports = router;

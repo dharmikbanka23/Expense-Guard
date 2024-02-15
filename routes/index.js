@@ -1,8 +1,9 @@
-var sendMail = require('../middleware/email.js');
+var sendMail = require('../middleware/email');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var express = require('express');
 var router = express.Router();
+var authenticate = require('../middleware/authenticateUser');
 require('dotenv').config();
 
 var userModel = require('../models/userModel'); //Users collection
@@ -58,100 +59,6 @@ router.get(['/', '/dashboard'], async function (req, res, next) {
     configuration
   });
 });
-
-
-// Send login page
-router.get('/login', function (req, res, next) {
-  if (authenticate(req.cookies)) { return res.redirect('/') }
-
-  res.render('login', { message: "" });
-});
-
-// Validate login page
-router.post('/login', async function (req, res, next) {
-  let user = req.body.user.toLowerCase();
-  let valPassword = req.body.password;
-  let userRecord;
-
-  if (user.includes("@")) {
-    userRecord = await userModel.findOne({ email: user }, { _id: 0, username: 1, email: 1, password: 1 });
-  }
-  else {
-    userRecord = await userModel.findOne({ username: user }, { _id: 0, username: 1, email: 1, password: 1 });
-  }
-
-  // Validate
-  if (!userRecord || !await bcrypt.compare(valPassword, userRecord.password)) {
-    return res.render("login", { message: "Invalid user or password" });
-  }
-  const token = jwt.sign({ username: userRecord.username, email: userRecord.email }, process.env.JWT_SECRET, { expiresIn: '24hrs' });
-  res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 });
-
-  res.redirect('/dashboard');
-});
-
-// Send register page
-router.get('/register', function (req, res, next) {
-  if (authenticate(req.cookies)) { return res.redirect('/') }
-  res.render('register', { message: "" });
-});
-
-// Validate register page
-router.post('/register', async function (req, res, next) {
-  let username = req.body.username.toLowerCase();
-  let email = req.body.email;
-  let password = await bcrypt.hash(req.body.password, 10);
-
-  if (await userModel.findOne({ username: username })) {
-    res.render('register', { message: "Username already exists" });
-  }
-  else if (await userModel.findOne({ email: email })) {
-    res.render('register', { message: "Email already exists" });
-  }
-  else {
-    //Creating new user
-    const newUser = {
-      username: username,
-      email: email,
-      password: password
-    };
-    try {
-      let result = await userModel.create(newUser);
-      const token = jwt.sign({ username: username, email: email }, process.env.JWT_SECRET, { expiresIn: '24hrs' });
-      res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 });
-
-      //Create him a configuration in the database
-      try {
-        await configurationModel.create({ user: username });
-      }
-      catch (err) {
-        console.error(err);
-        res.clearCookie('token');
-        await userModel.deleteOne({ username: username });
-        return res.render('register', { message: "Failed setting up register configuration" });
-      }
-      res.redirect('/dashboard');
-    }
-    catch (err) {
-      console.error(err);
-      res.render('register', { message: "Try again after sometime" });
-    }
-  }
-});
-
-// Log the user out
-router.get("/logout", function (req, res, next) {
-  res.clearCookie('token');
-  res.redirect('/login');
-});
-
-
-
-
-
-
-
-
 
 
 const sendNotification = function (email, configuration, expenses) {
@@ -266,23 +173,6 @@ function isSameWeek(date1, date2) {
 
   // Check if the difference in days is less than 7 and the day of the week is the same
   return diffDays < 7 && (dayOfWeek1 <= dayOfWeek2 || dayOfWeek2 === 0);
-}
-
-
-
-
-
-
-
-
-const authenticate = function (cookies) {
-  try {
-    const decoded = jwt.verify(cookies.token, process.env.JWT_SECRET);
-    return true;
-  }
-  catch (err) {
-    return false;
-  }
 }
 
 module.exports = router;
