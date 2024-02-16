@@ -14,7 +14,7 @@ function sendMail(email, htmlMessage) {
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,
-    subject: 'Wellness Report',
+    subject: 'Expense Report',
     html: htmlMessage,
   };
 

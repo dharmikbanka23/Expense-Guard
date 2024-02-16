@@ -11,9 +11,19 @@ describe('Email Middleware', () => {
   const email = 'test_email@gmail.com';
   const html = '<p> Sample Content </p>';
 
+  let stub;
+
+  beforeEach(() => {
+    stub = sinon.stub(nodemailer, 'createTransport');
+  });
+  
+  afterEach(() => {
+    stub.restore();
+  })  
+
   it('should send email successfully', () => {
     // Stubbing transporter.sendMail
-    const stub = sinon.stub(nodemailer, 'createTransport').callsFake(() => ({
+    stub.callsFake(() => ({
       sendMail: (options, callback) => callback(null, { response: 'Email sent successfully' }),
     }));
 
@@ -22,14 +32,11 @@ describe('Email Middleware', () => {
       expect(err).to.be.null;
       expect(info.response).to.equal('Email sent successfully');
     });
-
-    // Restore the stub
-    stub.restore();
   });
 
   it('should handle email sending error', () => {
     // Stubbing transporter.sendMail to simulate an error
-    const stub = sinon.stub(nodemailer, 'createTransport').callsFake(() => ({
+    stub.callsFake(() => ({
       sendMail: (options, callback) => callback(new Error('Email sending failed'), null),
     }));
 
@@ -40,7 +47,5 @@ describe('Email Middleware', () => {
       expect(err.message).to.equal('Email sending failed');
     });
 
-    // Restore the stub
-    stub.restore();
   });
 });
