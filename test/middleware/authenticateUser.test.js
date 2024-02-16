@@ -10,8 +10,7 @@ const authenticate = require('../../middleware/authenticateUser');
 describe('Authentication Middleware', () => {
   it('should return true for a valid token', () => {
 
-    const validToken = 'test_token';
-    const cookies = { token: validToken };
+    const cookies = { token: 'test_token' };
 
     // Stubbing jwt.verify to return a true object
     const jwtStub = sinon.stub(jwt, 'verify').returns({ someData: 'example' });
@@ -28,8 +27,7 @@ describe('Authentication Middleware', () => {
 
   it('should return false for an invalid token', () => {
     // Arrange
-    const invalidToken = 'invalid_token';
-    const cookies = { token: invalidToken };
+    const cookies = { token: 'invalid_token' };
 
     // Stubbing jwt.verify to throw an error
     const jwtStub = sinon.stub(jwt, 'verify').throws(new Error('Invalid token'));
