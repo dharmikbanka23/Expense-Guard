@@ -56,7 +56,7 @@ const createNotificationContent = function (configuration, expenses) {
 
   if (spentPercentage <= 80) {
     htmlContent = `
-      <h1> Wellness Report </h1>
+      <h1> Spending Analysis </h1>
       <p style="font-size: 16px"> <b>Total Spent:</b> ${totalSpentMonth} </p>
       <p style="font-size: 16px"> <b>Budget Set:</b> ${monthlyBudget} </p>
       <p style="font-size: 16px"> <b>Predicted Spending:</b> ${monthlyPredictionSpending.toFixed(2)} </p>
@@ -65,8 +65,8 @@ const createNotificationContent = function (configuration, expenses) {
   }
   else if (spentPercentage <= 95) {
     htmlContent = `
-      <h1> Wellness Report </h1>
-      <p style="font-size: 16px"> <b>Total Spent:</b> ${totalSpentMonth} </p>
+    <h1> Spending Analysis </h1>
+    <p style="font-size: 16px"> <b>Total Spent:</b> ${totalSpentMonth} </p>
       <p style="font-size: 16px"> <b>Budget Set:</b> ${monthlyBudget} </p>
       <p style="font-size: 16px"> <b>Predicted Spending:</b> ${monthlyPredictionSpending.toFixed(2)} </p>
       <p>Your spending is approaching the budget limit. Consider reviewing your expenses.</p>
@@ -74,7 +74,7 @@ const createNotificationContent = function (configuration, expenses) {
   }
   else {
     htmlContent = `
-      <h1> Wellness Report </h1>
+      <h1> Spending Analysis </h1>
       <p style="font-size: 16px"> <b>Total Spent:</b> ${totalSpentMonth} </p>
       <p style="font-size: 16px"> <b>Budget Set:</b> ${monthlyBudget} </p>
       <p style="font-size: 16px"> <b>Predicted Spending:</b> ${monthlyPredictionSpending.toFixed(2)} </p>
