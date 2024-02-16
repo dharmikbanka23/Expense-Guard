@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const connectDB = async () => {
-    const url = "mongodb+srv://dharmikbanka23:Wupf02cDZ1SG0xjh@cluster0.qx1ehfm.mongodb.net/expense_tracker?retryWrites=true&w=majority";
+    const url = process.env.MONGODB_URI;
 
-    //{ useNewUrlParser: true, useUnifiedTopology: true }
     try {
         await mongoose.connect(url);
-        console.log('Database connected:', url);
+        console.log('Database connected');
     } catch (err) {
         console.error(err.message);
         process.exit(1);
@@ -15,7 +15,7 @@ const connectDB = async () => {
     const dbConnection = mongoose.connection;
 
     dbConnection.once("open", () => {
-        console.log('Database connected:', url);
+        console.log('Database connected');
     });
 
     dbConnection.on("error", (err) => {
