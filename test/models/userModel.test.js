@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 // const ValidationError = mongoose.Error.ValidationError;
 
 const userModel = require('../../models/userModel');
@@ -38,11 +38,11 @@ describe('Testing User Model', () => {
       await user.validate();
     } 
     catch (err) {
-      expect(err).to.exist;
+      expect(err.errors).to.exist;
     }
   });
 
-  it('should throw an error due to missing fields', async () => {
+  it('should throw an error trying to insert an empty document', async () => {
     let user = new userModel();
 
     try {
