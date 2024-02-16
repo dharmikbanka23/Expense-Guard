@@ -49,6 +49,8 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
    Create a .env file in the root directory and add necessary configurations.
 
    ```.env
+   MONGODB_URI='YOUR_MONGODB_ACCESS_STRING'
+   
    JWT_SECRET='YOUR_JWT_TOKEN'
    
    EMAIL='YOUR_EMAIL'
