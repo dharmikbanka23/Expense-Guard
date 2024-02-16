@@ -4,8 +4,8 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 const rewire = require('rewire');
-
 const sandbox = sinon.createSandbox();
+
 let notificationController = rewire('../../controllers/notificationController');
 // const sendMail = notificationController.__get__('sendMail');  // Storing the private sendMail function for future
 
