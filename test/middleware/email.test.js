@@ -1,51 +1,45 @@
 const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-const nodemailer = require('nodemailer');
-chai.use(sinonChai);
 
 const sendMail = require('../../middleware/email');
 
-describe('Email Middleware', () => {
-  const email = 'test_email@gmail.com';
-  const html = '<p> Sample Content </p>';
-
-  let stub;
-
-  beforeEach(() => {
-    stub = sinon.stub(nodemailer, 'createTransport');
-  });
-  
-  afterEach(() => {
-    stub.restore();
-  })  
+describe('sendMail', () => {
 
   it('should send email successfully', () => {
-    // Stubbing transporter.sendMail
-    stub.callsFake(() => ({
-      sendMail: (options, callback) => callback(null, { response: 'Email sent successfully' }),
-    }));
+    const email = 'test@example.com';
+    const html = '<p>Test message</p>';
 
-    // Call the function
-    sendMail(email, html, (err, info) => {
-      expect(err).to.be.null;
-      expect(info.response).to.equal('Email sent successfully');
-    });
-  });
-
-  it('should handle email sending error', () => {
-    // Stubbing transporter.sendMail to simulate an error
-    stub.callsFake(() => ({
-      sendMail: (options, callback) => callback(new Error('Email sending failed'), null),
-    }));
-
-    // Call the function
-    sendMail(email, html, (err, info) => {
-      expect(err).to.be.an.instanceOf(Error);
-      expect(info).to.be.null;
-      expect(err.message).to.equal('Email sending failed');
+    // Mock nodemailer
+    const nodemailer = require('nodemailer');
+    sinon.stub(nodemailer, 'createTransport').returns({
+      sendMail: sinon.stub().yields(null, { response: 'success' })
     });
 
+    sendMail(email, html);
+
+    expect(nodemailer.createTransport.calledOnce).to.be.true;
+    expect(nodemailer.createTransport().sendMail.calledOnce).to.be.true;
+
+    nodemailer.createTransport.restore();
   });
+
+  it('should handle error in sending email', () => {
+    const email = 'test@example.com';
+    const html = '<p>Test message</p>';
+
+    // Mock nodemailer
+    const nodemailer = require('nodemailer');
+    sinon.stub(nodemailer, 'createTransport').returns({
+      sendMail: sinon.stub().yields(new Error('Error sending email'))
+    });
+
+    sendMail(email, html);
+
+    expect(nodemailer.createTransport.calledOnce).to.be.true;
+    expect(nodemailer.createTransport().sendMail.calledOnce).to.be.true;
+
+    nodemailer.createTransport.restore();
+  });
+
 });
