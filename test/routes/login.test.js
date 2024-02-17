@@ -3,7 +3,7 @@ const expect = chai.expect;
 const sinon = require('sinon');
 const rewire = require('rewire');
 const supertest = require('supertest');
-const app = rewire('../../app');
+const app = require('../../app');
 
 const userModel = require('../../models/userModel');
 const bcrypt = require('bcrypt');
@@ -16,7 +16,8 @@ describe('Login Route', () => {
   describe('GET Routes', () => {
 
     it('should render the login page without a message and the title', async () => {
-      const res = await request.get('/login');
+      const res = await request
+        .get('/login');
       expect(res.status).to.equal(200);
       expect(res.text).to.include('<title>Expense Guard | Login</title>');
     });
@@ -36,7 +37,7 @@ describe('Login Route', () => {
       sinon.stub(jwt, 'sign').returns('fakeToken');
       sinon.stub(jwt, 'verify').throws(new Error('Invalid token'));
 
-      const res = await supertest(app)
+      const res = await request
         .post('/login')
         .send({ user: 'test-user', password: 'test-password' });
 
@@ -57,7 +58,7 @@ describe('Login Route', () => {
       sinon.stub(jwt, 'sign').returns('fakeToken');
       sinon.stub(jwt, 'verify').throws(new Error('Invalid token'));
 
-      const res = await supertest(app)
+      const res = await request
         .post('/login')
         .send({ user: 'test@example.com', password: 'test-password' });
 
@@ -78,7 +79,7 @@ describe('Login Route', () => {
       sinon.stub(jwt, 'sign').throws(new Error('Invalid token'));
       sinon.stub(jwt, 'verify').throws(new Error('Invalid token'));
 
-      const res = await supertest(app)
+      const res = await request
         .post('/login')
         .send({ user: 'invalid-user', password: 'invalid-password' });
 
