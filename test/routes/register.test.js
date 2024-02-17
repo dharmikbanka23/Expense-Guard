@@ -2,7 +2,6 @@ const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
 const rewire = require('rewire');
-const sandbox = sinon.createSandbox();
 const supertest = require('supertest');
 
 const bcrypt = require('bcrypt');

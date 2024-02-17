@@ -1,7 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
-const rewire = require('rewire');
 const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
 

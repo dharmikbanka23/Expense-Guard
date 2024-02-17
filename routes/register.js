@@ -11,12 +11,12 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel') //Configurations collection
 
 // Send register page
-router.get('/', authenticated, function (req, res, next) {
+router.get('/', authenticated, function (req, res) {
   res.render('register', { message: "" });
 });
 
 // Validate register page
-router.post('/', authenticated, async function (req, res, next) {
+router.post('/', authenticated, async function (req, res) {
   let username = req.body.username.toLowerCase();
   let email = req.body.email;
   let password = await bcrypt.hash(req.body.password, 10);

@@ -9,7 +9,7 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel') //Configurations collection
 
 // Send dashboard page
-router.get(['/', '/dashboard'], authenticate, async function (req, res, next) {
+router.get(['/', '/dashboard'], authenticate, async function (req, res) {
 
   // Fetch the jwt token
   const username = req.user.username;
@@ -17,7 +17,7 @@ router.get(['/', '/dashboard'], authenticate, async function (req, res, next) {
 
   // Getting last 15 expenses
   let expenseRecord = await expenseModel.find({ username: username }, { username: 0, __v: 0 }).sort({ expenseDate: -1 }).limit(15);
-  
+
   // Getting the current month expenses
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1;
