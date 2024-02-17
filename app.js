@@ -3,13 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var connectDB = require('./db');
 var bodyParser = require('body-parser'); // helps to parse the body in the params
 
 // start up the instances
 var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-connectDB();
 
 // set up the routes
 var indexRouter = require('./routes/index');

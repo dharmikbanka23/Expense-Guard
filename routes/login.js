@@ -13,6 +13,7 @@ var configurationModel = require('../models/configurationModel') //Configuration
 router.get('/', authenticated, function (req, res, next) {
 
   res.render('login', { message: "" });
+  
 });
 
 // Validate login page
