@@ -8,7 +8,6 @@ const app = rewire('../../app');
 const userModel = require('../../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const e = require('express');
 
 const request = supertest(app);
 

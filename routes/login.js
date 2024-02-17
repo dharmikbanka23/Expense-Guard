@@ -10,14 +10,14 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel') //Configurations collection
 
 // Send login page
-router.get('/', authenticated, function (req, res, next) {
+router.get('/', authenticated, function (req, res) {
 
   res.render('login', { message: "" });
   
 });
 
 // Validate login page
-router.post('/', authenticated, async function (req, res, next) {
+router.post('/', authenticated, async function (req, res) {
 
   let user = req.body.user.toLowerCase();
   let valPassword = req.body.password;
