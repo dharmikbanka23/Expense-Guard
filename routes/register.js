@@ -39,16 +39,7 @@ router.post('/', authenticated, async function (req, res, next) {
       const token = jwt.sign({ username: username, email: email }, process.env.JWT_SECRET, { expiresIn: '24hrs' });
       res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000 });
 
-      //Create him a configuration in the database
-      try {
-        await configurationModel.create({ user: username });
-      }
-      catch (err) {
-        console.error(err);
-        res.clearCookie('token');
-        await userModel.deleteOne({ username: username });
-        return res.render('register', { message: "Failed setting up register configuration" });
-      }
+      await configurationModel.create({ user: username });
 
       //Send mail
       let html = `
