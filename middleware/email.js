@@ -1,12 +1,12 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-function sendMail(email, htmlMessage) {
+function sendMail(email, htmlMessage, subject = "Expense Report") {
 
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,
-    subject: 'Expense Report',
+    subject: subject,
     html: htmlMessage,
   };
 

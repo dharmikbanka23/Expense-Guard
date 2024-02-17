@@ -1,5 +1,3 @@
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
 var express = require('express');
 var router = express.Router();
 var authenticate = require('../middleware/authenticateUser');
@@ -10,13 +8,13 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel'); //Configuration collection
 
 // Send expenses page, load current tasks
-router.get('/', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.get('/', authenticate, async function (req, res, next) {
 
+  const username = req.user.username;
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.toLocaleString('en-US', { month: 'short' });
-  const username = jwt.decode(req.cookies.token).username;
+  
   try {
     const userConfig = await configurationModel.findOne({ user: username });
 
@@ -46,10 +44,9 @@ router.get('/', async function (req, res, next) {
 });
 
 // Set default monthly budget
-router.post('/defaultMonthlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/defaultMonthlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   try {
     await configurationModel.updateOne({ user: username }, { defaultMonthlyBudget: req.body.defaultMonthlyBudget })
     res.redirect('/adjust');
@@ -61,10 +58,9 @@ router.post('/defaultMonthlyBudget', async function (req, res, next) {
 });
 
 // Set default yearly budget
-router.post('/defaultYearlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/defaultYearlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   try {
     await configurationModel.updateOne({ user: username }, { defaultYearlyBudget: req.body.defaultYearlyBudget })
     res.redirect('/adjust');
@@ -76,10 +72,9 @@ router.post('/defaultYearlyBudget', async function (req, res, next) {
 });
 
 // Set current monthly budget
-router.post('/currentMonthlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/currentMonthlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -128,10 +123,9 @@ router.post('/currentMonthlyBudget', async function (req, res, next) {
 });
 
 // Set current yearly budget 
-router.post('/currentYearlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/currentYearlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
 
@@ -176,10 +170,9 @@ router.post('/currentYearlyBudget', async function (req, res, next) {
 });
 
 // Set custom monthly budget
-router.post('/customMonthlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/customMonthlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
 
   try {
     const existingDocument = await configurationModel.findOne({
@@ -225,10 +218,9 @@ router.post('/customMonthlyBudget', async function (req, res, next) {
 });
 
 // Set custom yearly budget
-router.post('/customYearlyBudget', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/customYearlyBudget', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
 
   try {
     const existingDocument = await configurationModel.findOne({
@@ -271,10 +263,10 @@ router.post('/customYearlyBudget', async function (req, res, next) {
 });
 
 // Set notification frequency
-router.post('/notificationFrequency', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/notificationFrequency', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
+
   try {
     await configurationModel.updateOne({ user: username }, { notificationFrequency: req.body.frequency })
     res.redirect('/adjust');
@@ -286,10 +278,10 @@ router.post('/notificationFrequency', async function (req, res, next) {
 });
 
 // Set notification channels
-router.post('/notificationChannels', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/notificationChannels', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
+
   try {
     const selectedChannels = [];
 

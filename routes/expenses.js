@@ -1,5 +1,3 @@
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
 var express = require('express');
 var router = express.Router();
 var authenticate = require('../middleware/authenticateUser');
@@ -14,21 +12,18 @@ const upload = multer({ dest: "./public/uploads" });
 const { deleteFile, uploadFileToS3, deleteFileFromS3 } = require('../services/s3upload');
 
 // Send expenses page, load current tasks
-router.get('/', async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.get('/', authenticate, async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   let expenseRecord = await expenseModel.find({ username: username }, { username: 0, __v: 0 }).sort({ expenseDate: -1 });
 
   res.render('expenses', { expenseRecord: expenseRecord });
 });
 
 // Adding an expense
-router.post('/add', upload.single('expenseImage'), async function (req, res, next) {
-  // Assuming authenticate function checks the user's authentication status
-  if (!authenticate(req.cookies)) { return res.redirect('/login'); }
+router.post('/add', authenticate, upload.single('expenseImage'), async function (req, res, next) {
 
-  const username = jwt.decode(req.cookies.token).username;
+  const username = req.user.username;
   const { category, expenseDate, amount, description } = req.body;
 
   let s3url = "";
@@ -60,11 +55,11 @@ router.post('/add', upload.single('expenseImage'), async function (req, res, nex
 
 
 //Filter the expenses
-router.post('/filter', async (req, res) => {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/filter', authenticate, async (req, res) => {
+
+  const username = req.user.username;
 
   try {
-    const username = jwt.decode(req.cookies.token).username;
     const { category, fromDate, toDate } = req.body;
     let filter = { username: username };
 
@@ -93,8 +88,7 @@ router.post('/filter', async (req, res) => {
 
 
 //Updating a expense
-router.post('/edit', async (req, res) => {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.post('/edit', authenticate, async (req, res) => {
 
   try {
     // Retrieve data from the request body
@@ -125,8 +119,7 @@ router.post('/edit', async (req, res) => {
 });
 
 //Deleting an expense
-router.delete('/delete/:id', async (req, res) => {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.delete('/delete/:id', authenticate, async (req, res) => {
 
   try {
     const expenseId = req.params.id;
@@ -150,6 +143,5 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 module.exports = router;

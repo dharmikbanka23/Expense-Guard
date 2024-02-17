@@ -1,16 +1,15 @@
 var jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const authenticate = function (req, res, next) {
+const authenticated = function (req, res, next) {
   try {
     const token = req.cookies.token;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
+    res.redirect('/');
   }
   catch (err) {
-    res.redirect('/login');
+    next();
   }
 }
 
-module.exports = authenticate;
+module.exports = authenticated;

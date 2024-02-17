@@ -1,5 +1,3 @@
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
 var express = require('express');
 var router = express.Router();
 var authenticate = require('../middleware/authenticateUser');
@@ -11,12 +9,11 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel') //Configurations collection
 
 // Send dashboard page
-router.get(['/', '/dashboard'], async function (req, res, next) {
-  if (!authenticate(req.cookies)) { return res.redirect('/login') }
+router.get(['/', '/dashboard'], authenticate, async function (req, res, next) {
 
-  // Decode the jwt token
-  const username = jwt.decode(req.cookies.token).username;
-  const email = jwt.decode(req.cookies.token).email;
+  // Fetch the jwt token
+  const username = req.user.username;
+  const email = req.user.email;
 
   // Getting last 15 expenses
   let expenseRecord = await expenseModel.find({ username: username }, { username: 0, __v: 0 }).sort({ expenseDate: -1 }).limit(15);
