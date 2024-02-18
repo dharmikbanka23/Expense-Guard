@@ -1,7 +1,7 @@
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { createReadStream } = require("fs");
 const fs = require("fs");
- 
+
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -9,7 +9,7 @@ const s3Client = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
- 
+
 // Function to upload file to S3
 async function uploadFileToS3(username, bucketName, file) {
   const fileStream = createReadStream(file.path);
@@ -24,7 +24,8 @@ async function uploadFileToS3(username, bucketName, file) {
   };
  
   try {
-    const data = await s3Client.send(new PutObjectCommand(uploadParams));
+    console.log("Uploading file to S3");
+    await s3Client.send(new PutObjectCommand(uploadParams));
     console.log("File uploaded successfully:");
     return `https://${bucketName}.s3.amazonaws.com/${fileName}`;
   }

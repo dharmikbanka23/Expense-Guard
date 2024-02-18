@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
 const rewire = require('rewire');
-const customFile = require('../../services/s3upload');
+const customFile = require('../../controllers/s3Controller');
 
 const userModel = require('../../models/userModel');
 const expenseModel = require('../../models/expenseModel');
