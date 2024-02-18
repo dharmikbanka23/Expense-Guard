@@ -3,7 +3,7 @@ const expect = chai.expect;
 const sinon = require('sinon');
 const nodemailer = require('nodemailer');
 
-const sendMail = require('../../middleware/email');
+const { sendMail } = require('../../controllers/gmail');
 
 describe('Mail Middleware', () => {
 

@@ -30,4 +30,4 @@ function sendMail(email, htmlMessage, subject = "Expense Report") {
   
 }
 
-module.exports = sendMail;
+module.exports = { sendMail };

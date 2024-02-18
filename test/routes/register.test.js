@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../../models/userModel');
 const configurationModel = require('../../models/configurationModel');
+const gmail = require('../../controllers/gmail');
 
 let app = rewire('../../app');
 const request = supertest(app);
@@ -26,6 +27,10 @@ describe('Register Route', () => {
 
   describe('POST Routes', () => {
 
+    beforeEach(() => {
+      sinon.stub(gmail, 'sendMail').resolves();
+    })
+    
     afterEach(() => {
       sinon.restore();
     });
