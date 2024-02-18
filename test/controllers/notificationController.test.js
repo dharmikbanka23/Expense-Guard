@@ -20,12 +20,17 @@ describe('Notification Controller', () => {
   afterEach(() => {
     notificationController = rewire('../../controllers/notificationController');
     sandbox.restore();
-  });  
+  });
+
+  const today = new Date();
+  const dayToday = new Date().getDate();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
   describe('Daily Notifications', () => {
+
     // Define the parameters
     const email = 'test@example.com';
-    const expenses = [];
+    const expenses = [{user: 'test-user', amount: 90*dayToday/daysInMonth, category: 'test-category', expenseDate: new Date()}];
 
     it('should send email notification daily if notificationTrack not present', async() => {
       // Define the dynamic parameters
@@ -33,7 +38,7 @@ describe('Notification Controller', () => {
         notificationFrequency: 'daily',
         notificationChannels: ['email'],
         monthlyBudget: [],
-        defaultMonthlyBudget: 1000,
+        defaultMonthlyBudget: 0.1,
       };
 
       // Call the function you want to test
@@ -50,7 +55,7 @@ describe('Notification Controller', () => {
         notificationChannels: ['email'],
         notificationTrack: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(),
         monthlyBudget: [],
-        defaultMonthlyBudget: 1000,
+        defaultMonthlyBudget: 100,
       };
       // Call the function you want to test
       await notificationController(email, configuration, expenses);
@@ -75,6 +80,22 @@ describe('Notification Controller', () => {
       expect(sendMailStub).not.to.have.been.called;
     });
 
+    it('should  not send email notification daily if email not present', async() => {
+      // Define the dynamic parameters
+      const configuration = {
+        notificationFrequency: 'daily',
+        notificationChannels: ['push'],
+        monthlyBudget: [],
+        defaultMonthlyBudget: 1000,
+      };
+
+      // Call the function you want to test
+      await notificationController(email, configuration, expenses);
+
+      // Assert that sendMailStub was called once
+      expect(sendMailStub).not.to.have.been.calledOnce;
+    });
+
   });
 
   describe('Weekly Notifications', () => {
@@ -87,7 +108,7 @@ describe('Notification Controller', () => {
       const configuration = {
         notificationFrequency: 'weekly',
         notificationChannels: ['email'],
-        monthlyBudget: [],
+        monthlyBudget: [{year: today.getFullYear(), month: today.getMonth() + 1, amount: 100}],
         defaultMonthlyBudget: 1000,
       };
 
@@ -128,6 +149,22 @@ describe('Notification Controller', () => {
 
       // Assert that sendMailStub was called none
       expect(sendMailStub).not.to.have.been.called;
+    });
+
+    it('should not send email notification weekly if email not present', async() => {
+      // Define the dynamic parameters
+      const configuration = {
+        notificationFrequency: 'weekly',
+        notificationChannels: ['push'],
+        monthlyBudget: [],
+        defaultMonthlyBudget: 1000,
+      };
+
+      // Call the function you want to test
+      await notificationController(email, configuration, expenses);
+
+      // Assert that sendMailStub was called once
+      expect(sendMailStub).not.to.have.been.calledOnce;
     });
 
   });
