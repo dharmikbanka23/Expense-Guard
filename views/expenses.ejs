@@ -178,7 +178,6 @@
                                             <img class="image-status" src="/images/icons/image-absent.svg">
                                         </div>
                                         <% } %>
-
                                             <!-- Edit button -->
                                             <button class="edit"
                                                 onclick="openEditModal('<%= expense._id %>', '<%= expense.category %>', `<%= expense.expenseDate.toISOString().split('T')[0] %>`, '<%= expense.amount %>', '<%= expense.description %>')">Edit</button>
@@ -288,7 +287,7 @@
         document.getElementById('editCategory').value = category;
         document.getElementById('editExpenseDate').value = expenseDate;
         document.getElementById('editAmount').value = amount;
-        document.getElementById('editDescription').value = description;
+        document.getElementById('editDescription').value = description.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, "");
 
         // Fixing the bug where the description length is not updating
         document.getElementById('charCountEdit').innerHTML = description.length + '/50';
@@ -355,7 +354,7 @@
             rowToUpdate.querySelector('td:nth-child(1)').textContent = updatedExpense.editCategory;
             rowToUpdate.querySelector('td:nth-child(2)').textContent = updatedExpense.editExpenseDate;
             rowToUpdate.querySelector('td:nth-child(3)').textContent = updatedExpense.editAmount;
-            rowToUpdate.querySelector('td:nth-child(4)').textContent = updatedExpense.editDescription;
+            rowToUpdate.querySelector('td:nth-child(4)').textContent = updatedExpense.editDescription.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, "");
 
             const editButton = rowToUpdate.querySelector('.edit');
             editButton.setAttribute('onclick', `openEditModal('${updatedExpense.editExpenseId}', '${updatedExpense.editCategory}', '${updatedExpense.editExpenseDate}', '${updatedExpense.editAmount}', '${updatedExpense.editDescription}')`);

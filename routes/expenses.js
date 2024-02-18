@@ -24,14 +24,14 @@ router.get('/', authenticate, async function (req, res) {
 router.post('/add', authenticate, upload.single('expenseImage'), async function (req, res, next) {
 
   const username = req.user.username;
-  const { category, expenseDate, amount, description } = req.body;
+  let { category, expenseDate, amount, description } = req.body;
 
-  // Remove < and > from description if any
-  description = description.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  // Make sure remove sensitive characters from description
+  description = description.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, "");
 
   let s3url = "";
-  
-  if (req.file){
+
+  if (req.file) {
     s3url = await customFile.uploadFileToS3(username, process.env.AWS_S3_BUCKET_NAME, req.file);
     customFile.deleteFile(req.file.path);
   }
@@ -99,10 +99,10 @@ router.post('/edit', authenticate, async (req, res) => {
     const editCategory = req.body.editCategory;
     const editExpenseDate = req.body.editExpenseDate;
     const editAmount = req.body.editAmount;
-    const editDescription = req.body.editDescription;
+    let editDescription = req.body.editDescription;
 
-    // Remove < and > from editDescription if any
-    editDescription = editDescription.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    // Make sure to remove sensitive characters from editDescription
+    editDescription = editDescription.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, "");
 
     // Update the expense in the database
     await expenseModel.findByIdAndUpdate(
@@ -129,18 +129,18 @@ router.delete('/delete/:id', authenticate, async (req, res) => {
 
   try {
     const expenseId = req.params.id;
-    const expenseRecord = await expenseModel.findOne({_id: expenseId});
+    const expenseRecord = await expenseModel.findOne({ _id: expenseId });
 
     let url = expenseRecord.expenseURL || "";
 
-    if (url){
+    if (url) {
       try {
         await customFile.deleteFileFromS3(url);
-      } 
+      }
       catch (err) {
         console.log('Error during file deletion');
         res.status(500).json({ error: 'File deletion failed' });
-      }    
+      }
     }
 
     await expenseModel.findByIdAndDelete(expenseId);
