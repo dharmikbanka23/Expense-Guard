@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node --watch ./bin/www",
-    "test": "mocha --timeout 5000 test/**/*.test.js",
-    "test:watch": "mocha --timeout 5000 --watch test/**/*.test.js",
-    "custom-test": "mocha --timeout 5000 test/routes/index.test.js",
+    "test": "mocha test/**/*.test.js",
+    "test:watch": "mocha --watch test/**/*.test.js",
+    "custom-test": "mocha test/routes/adjust.test.js",
     "coverage": "nyc npm test"
   },
   "dependencies": {

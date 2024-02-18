@@ -8,7 +8,7 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 var configurationModel = require('../models/configurationModel'); //Configuration collection
 
 // Send expenses page, load current tasks
-router.get('/', authenticate, async function (req, res, next) {
+router.get('/', authenticate, async function (req, res) {
 
   const username = req.user.username;
   const currentDate = new Date();
@@ -44,7 +44,7 @@ router.get('/', authenticate, async function (req, res, next) {
 });
 
 // Set default monthly budget
-router.post('/defaultMonthlyBudget', authenticate, async function (req, res, next) {
+router.post('/defaultMonthlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
   try {
@@ -289,7 +289,7 @@ router.post('/notificationChannels', authenticate, async function (req, res, nex
       { user: username },
       { $unset: { notificationTrack: 1 } }
     );
-
+    
     if (req.body.push) {
       selectedChannels.push('push');
     }
@@ -297,7 +297,7 @@ router.post('/notificationChannels', authenticate, async function (req, res, nex
     if (req.body.email) {
       selectedChannels.push('email');
     }
-
+    
     await configurationModel.updateOne({ user: username }, { notificationChannels: selectedChannels });
     res.redirect('/adjust');
   }
