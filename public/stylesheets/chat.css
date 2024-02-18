@@ -69,11 +69,12 @@
   font-size: 14px;
   width: fit-content;
   min-width: 30%;
-  max-width: 100%;
+  max-width: 95%;
   background-color: rgb(170, 220, 255); /* Light blue color */
   border-radius: 10px;
   margin: 5px 0; /* Top and bottom margin of 5px */
   padding: 7.5px 10px; /* Adjust padding as needed */
+  /* text-align: justify; Align text to justify */
   overflow: hidden; /* Hide overflow content */
   overflow-wrap: break-word; /* Break words if needed */
   text-overflow: ellipsis; /* Display ellipsis for overflowed content */
@@ -92,6 +93,10 @@
 
 .other-message {
   background-color: #e0e0e0; /* Light gray color for others' messages */
+}
+
+.expenseGPT-message {
+  background-color: #d7f7d7; /* Light green color for expenseGPT messages */
 }
 
 /* Timestamp style */

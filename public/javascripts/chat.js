@@ -38,6 +38,10 @@ socket.on('chatMessage', (message, user) => {
   const messageContainer = document.createElement('div');
   messageContainer.className = isUser ? 'message-container user-message' : 'message-container other-message';
 
+  // Check if it is ExpenseGPT message
+  if(user === 'ExpenseGPT'){
+    messageContainer.className +=' expenseGPT-message';
+  }
 
   const usernameElement = document.createElement('p');
   usernameElement.textContent = user;

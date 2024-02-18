@@ -26,6 +26,9 @@ router.post('/add', authenticate, upload.single('expenseImage'), async function 
   const username = req.user.username;
   const { category, expenseDate, amount, description } = req.body;
 
+  // Remove < and > from description if any
+  description = description.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
   let s3url = "";
   
   if (req.file){
@@ -97,6 +100,9 @@ router.post('/edit', authenticate, async (req, res) => {
     const editExpenseDate = req.body.editExpenseDate;
     const editAmount = req.body.editAmount;
     const editDescription = req.body.editDescription;
+
+    // Remove < and > from editDescription if any
+    editDescription = editDescription.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     // Update the expense in the database
     await expenseModel.findByIdAndUpdate(

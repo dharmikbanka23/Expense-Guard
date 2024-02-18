@@ -6,6 +6,7 @@
 
 var app = require('../app');
 var connectDB = require('../db');  // Add this line to import connectDB
+var gpt = require('../gpt'); // Add this line to import ExpenseGPT
 var debug = require('debug')('express-test:server');
 var http = require('http');
 var socketIO = require('socket.io'); // Add this line to import socket.io
@@ -32,10 +33,17 @@ connectDB()
       console.log('A user connected');
 
       // Handle chat messages
-      socket.on('chatMessage', (message, user) => {
-        // Decode the token to get the username
+      socket.on('chatMessage', async (message, user) => {
+
         // Broadcast the message and username to all connected clients
         io.emit('chatMessage', message, user);
+
+        // Check if the message wants to communicate with ExpenseGPT
+        if (message[0] === '!') {
+          let gptResponse = await gpt.askExpenseGPT(message.slice(1));
+          io.emit('chatMessage', gptResponse, 'ExpenseGPT');
+        }
+
       });
 
       // Handle disconnect
