@@ -9,10 +9,10 @@ var expenseModel = require('../models/expenseModel'); //Expenses collection
 //Image part
 const multer = require('multer');
 const upload = multer({ dest: "./public/uploads" });
-const { deleteFile, uploadFileToS3, deleteFileFromS3 } = require('../services/s3upload');
+const customFile = require('../controllers/s3Controller');
 
 // Send expenses page, load current tasks
-router.get('/', authenticate, async function (req, res, next) {
+router.get('/', authenticate, async function (req, res) {
 
   const username = req.user.username;
   let expenseRecord = await expenseModel.find({ username: username }, { username: 0, __v: 0 }).sort({ expenseDate: -1 });
@@ -29,8 +29,8 @@ router.post('/add', authenticate, upload.single('expenseImage'), async function 
   let s3url = "";
   
   if (req.file){
-    s3url = await uploadFileToS3(username, process.env.AWS_S3_BUCKET_NAME, req.file);
-    deleteFile(req.file.path);
+    s3url = await customFile.uploadFileToS3(username, process.env.AWS_S3_BUCKET_NAME, req.file);
+    customFile.deleteFile(req.file.path);
   }
 
   // Creating a new expense object
@@ -129,9 +129,11 @@ router.delete('/delete/:id', authenticate, async (req, res) => {
 
     if (url){
       try {
-        await deleteFileFromS3(url);
-      } catch (err) {
-        console.error('Error deleting file:', err);
+        await customFile.deleteFileFromS3(url);
+      } 
+      catch (err) {
+        console.log('Error during file deletion');
+        res.status(500).json({ error: 'File deletion failed' });
       }    
     }
 
@@ -139,7 +141,7 @@ router.delete('/delete/:id', authenticate, async (req, res) => {
     res.status(204).end();
   }
   catch (error) {
-    console.error('Error during expense deletion:', error);
+    console.error('Error during expense deletion');
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
