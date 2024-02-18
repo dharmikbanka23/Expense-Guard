@@ -17,6 +17,7 @@ var adjustRouter = require('./routes/adjust');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
 var logoutRouter = require('./routes/logout');
+var errorRouter = require('./routes/error');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +36,7 @@ app.use('/logout',logoutRouter);
 app.use('/expenses', expensesRouter);
 app.use('/statistics', statisticsRouter);
 app.use('/adjust', adjustRouter);
+app.use('/error', errorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
