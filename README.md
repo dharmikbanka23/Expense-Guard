@@ -1,8 +1,8 @@
-# Expense Tracker Project
+# Expense Guard Project
 
 ## Overview
 
-The **Expense Tracker Project** is designed to help individuals manage their expenses effectively. This document provides an overview of the project, including its features, technologies used, and installation instructions.
+The **Expense Guard Project** is designed to help individuals manage their expenses effectively. This document provides an overview of the project, including its features, technologies used, and installation instructions.
 
 ## Features
 
