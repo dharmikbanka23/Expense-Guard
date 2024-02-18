@@ -79,6 +79,7 @@
                     <div>
                         <label for="expenseDate">Expense Date:</label><br>
                         <input type="date" id="expenseDate" name="expenseDate"
+                            value="<%= new Date().toISOString().split('T')[0] %>"
                             max="<%= new Date().toISOString().split('T')[0] %>" required>
                     </div>
                     <div>
@@ -166,21 +167,23 @@
                             <td class="holder">
                                 <!-- Image button -->
                                 <% if (expense.expenseURL) { %>
-                                <div class="contain-1">
-                                    <a href= '<%=expense.expenseURL%>' target="_blank"><img class="image-status" src="/images/icons/image-present.svg"></a>
-                                </div>
-                                <% } else { %>
-                                <div class="contain-2">
-                                    <img class="image-status" src="/images/icons/image-absent.svg">
-                                </div>
-                                <% } %>
+                                    <div class="contain-1">
+                                        <a href='<%=expense.expenseURL%>' target="_blank"><img class="image-status"
+                                                src="/images/icons/image-present.svg"></a>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="contain-2">
+                                            <img class="image-status" src="/images/icons/image-absent.svg">
+                                        </div>
+                                        <% } %>
 
-                                <!-- Edit button -->
-                                <button class="edit"
-                                    onclick="openEditModal('<%= expense._id %>', '<%= expense.category %>', `<%= expense.expenseDate.toISOString().split('T')[0] %>`, '<%= expense.amount %>', '<%= expense.description %>')">Edit</button>
-                                
-                                <!-- Delete button -->
-                                <button class="delete" onclick="confirmDelete('<%= expense._id %>')">Delete</button>
+                                            <!-- Edit button -->
+                                            <button class="edit"
+                                                onclick="openEditModal('<%= expense._id %>', '<%= expense.category %>', `<%= expense.expenseDate.toISOString().split('T')[0] %>`, '<%= expense.amount %>', '<%= expense.description %>')">Edit</button>
+
+                                            <!-- Delete button -->
+                                            <button class="delete"
+                                                onclick="confirmDelete('<%= expense._id %>')">Delete</button>
                             </td>
                         </tr>
                         <% } %>
