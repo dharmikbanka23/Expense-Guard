@@ -1,8 +1,8 @@
-# Expense Tracker Project
+# Expense Guard Project
 
 ## Overview
 
-The **Expense Tracker Project** is designed to help individuals manage their expenses effectively. This document provides an overview of the project, including its features, technologies used, and installation instructions.
+The **Expense Guard Project** is designed to help individuals manage their expenses effectively. This document provides an overview of the project, including its features, technologies used, and installation instructions.
 
 ## Features
 
@@ -13,7 +13,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 - **Custom Configurations:** Customize budgets and set notification preferences for wellness report.
 - **Graphical Reports:** Visualize expense data through charts and graphs.
 - **User Authentication:** Secure access with user accounts and authentication.
-- **Chat Application:** Chat with random users who are online. [Experimental]
+- **Chat Application:** Chat with random users who are online or with ExpenseGPT. [Experimental]
 
 ## Technologies Used
 
@@ -23,6 +23,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 - **Storage:** Amazon S3
 - **Compute:** Amazon EC2
 - **Authentication:** JSON Web Tokens (JWT)
+- **Integration:** OpenAI
 - **Frameworks:** Mongoose, JQuery, Multer, Nodemailer, Socket.io, Moment, Google Charts, Stupid Table
 - **Unit Testing:** Mocha, Chai, Chai-as-promised, Sinon, Sinon-chai, Supertest, Rewire, Nyc
 
@@ -57,6 +58,8 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
    
    EMAIL='YOUR_EMAIL'
    PASSWORD='YOUR_APP_PASSWORD_FOR_EMAIL'
+
+   OPENAI_API_KEY='YOUR_OPENAI_API_KEY'
    
    AWS_ACCESS_KEY_ID='YOUR_S3_ACCESS_KEY'
    AWS_SECRET_ACCESS_KEY='YOUR_S3_SECRET_KEY'
@@ -95,7 +98,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 
 6. **Global chat:**
 
-   In the dashboard, you could open up the chat feature and communicate with other users guarding their expenses.
+   In the dashboard, you could open up the chat feature and communicate with other users or ExpenseGPT on guarding expenses.
 
 7. **Logout:**
    
