@@ -23,7 +23,7 @@ The **Expense Tracker Project** is designed to help individuals manage their exp
 - **Storage** Amazon S3
 - **Authentication:** JSON Web Tokens (JWT)
 - **Frameworks:** Mongoose, JQuery, Multer, Nodemailer, Socket.io, Moment, Google Charts, Stupid Table
-- **Unit Testing:** Mocha, Chai, Chai-as-promised, Sinon, Sinon-chai, Supertest, Rewire 
+- **Unit Testing:** Mocha, Chai, Chai-as-promised, Sinon, Sinon-chai, Supertest, Rewire, Nyc
 
 ## Installation
 
