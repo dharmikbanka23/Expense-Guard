@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../../models/userModel');
 const configurationModel = require('../../models/configurationModel');
-const gmail = require('../../controllers/gmail');
+const gmail = require('../../controllers/mailController');
 
 let app = rewire('../../app');
 const request = supertest(app);

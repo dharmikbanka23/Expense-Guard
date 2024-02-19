@@ -1,4 +1,4 @@
-var { sendMail } = require('../controllers/gmail');
+var { sendMail } = require('./mailController');
 
 const sendNotification = function (email, configuration, expenses) {
   const today = new Date();

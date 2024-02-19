@@ -1,4 +1,4 @@
-var gmail = require('../controllers/gmail');
+var gmail = require('../controllers/mailController');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var express = require('express');
