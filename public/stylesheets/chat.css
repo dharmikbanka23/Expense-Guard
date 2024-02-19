@@ -21,7 +21,7 @@
   bottom: 50px;
   right: 50px;
   display: none;
-  max-width: 300px;
+  width: 330px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -37,8 +37,42 @@
   font-size: 12px;
 }
 
+.chat-footer{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.left-toggle, .right-toggle{
+  display: flex;
+  padding: 10px 5px;
+  width: 49.5%;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.left-toggle:hover:not(.toggled), .right-toggle:hover:not(.toggled){
+  background-color: rgba(196, 196, 196, 0.3);
+  cursor: pointer;
+}
+
+.toggled{
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.left-toggle img, .right-toggle img{
+  width: 20px;
+  margin: 0 5px;
+}
+
 /* Chat messages display area */
 .chat-messages {
+  height: 250px;
+  overflow-y: auto;
+}
+
+/* GPT messages display area */
+.gpt-messages {
   height: 250px;
   overflow-y: auto;
 }

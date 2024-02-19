@@ -1,5 +1,12 @@
 const socket = io();
 const chatModal = document.getElementById('chatModal');
+let currentChatMode;
+
+// On default
+window.onload = () => {
+  currentChatMode = 'ExpenseGPT';
+  updateChatMode();
+}
 
 // Add event listener to toggle the chat box
 document.getElementById('toggleChatButton').addEventListener('click', () => {
@@ -24,12 +31,57 @@ document.getElementById('chatInput').addEventListener('keypress', (event) => {
   }
 });
 
+
+// Add event listener to toggle between ExpenseGPT and Universal Chat
+document.querySelector('.left-toggle').addEventListener('click', () => {
+  currentChatMode = 'ExpenseGPT';
+  updateChatMode();
+});
+
+document.querySelector('.right-toggle').addEventListener('click', () => {
+  currentChatMode = 'UniversalChat';
+  updateChatMode();
+});
+
+// Function to update the chat mode
+function updateChatMode() {
+  const chatFooter = document.querySelector('.chat-footer');
+  const leftToggle = document.querySelector('.left-toggle');
+  const rightToggle = document.querySelector('.right-toggle');
+  const gptMessage = document.getElementById('gptMessages');
+  const chatMessage = document.getElementById('chatMessages');
+  
+  // Reset toggled class for both left and right toggles
+  leftToggle.classList.remove('toggled');
+  rightToggle.classList.remove('toggled');
+
+  // Toggle the class based on the current mode
+  if (currentChatMode === 'ExpenseGPT') {
+    leftToggle.classList.add('toggled');
+  } else {
+    rightToggle.classList.add('toggled');
+  }
+
+  // Implement logic to switch between different chat modes here
+  // For example, hide/show different chat content based on the current mode
+  if (currentChatMode === 'ExpenseGPT') {
+    gptMessage.style.display = 'block';
+    chatMessage.style.display = 'none';
+  }
+  else {
+    // Show Universal Chat content, hide ExpenseGPT content
+    gptMessage.style.display = 'none';
+    chatMessage.style.display = 'block';
+  }
+}
+
 // Listen for incoming messages
 socket.on('chatMessage', (message, user) => {
   // Assuming you have a variable 'currentUserUsername' that stores the current user's username
   const isUser = user === username;
 
   const chatMessages = document.getElementById('chatMessages');
+  const gptMessages = document.getElementById('gptMessages');
 
   // Create a timestamp using Moment.js
   const timestamp = moment().format('h:mm A');
@@ -39,10 +91,10 @@ socket.on('chatMessage', (message, user) => {
   messageContainer.className = isUser ? 'message-container user-message' : 'message-container other-message';
 
   // Check if it is ExpenseGPT message
-  if(user === 'ExpenseGPT'){
-    messageContainer.className +=' expenseGPT-message';
+  if (user === 'ExpenseGPT') {
+    messageContainer.className += ' expenseGPT-message';
   }
-
+  
   const usernameElement = document.createElement('p');
   usernameElement.textContent = user;
   usernameElement.className = 'username'; // Add a class for styling if needed
@@ -57,14 +109,19 @@ socket.on('chatMessage', (message, user) => {
   timestampElement.className = 'timestamp';
 
   // Append the message and timestamp to the container
-  if(!isUser){
+  if (!isUser) {
     messageContainer.appendChild(usernameElement);
   }
   messageContainer.appendChild(messageElement);
   messageContainer.appendChild(timestampElement);
 
   // Append the container to the chat messages
-  chatMessages.appendChild(messageContainer);
+  if (user === 'ExpenseGPT') {
+    gptMessages.appendChild(messageContainer);
+  }
+  else{
+    chatMessages.appendChild(messageContainer);
+  }
 
   // Scroll to the bottom of the chat messages
   scrollToBottom();

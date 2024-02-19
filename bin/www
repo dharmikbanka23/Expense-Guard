@@ -30,6 +30,7 @@ connectDB()
     var io = socketIO(server);
 
     io.on('connection', (socket) => {
+      // Log a message when a client connects
       console.log('A user connected');
 
       // Handle chat messages
