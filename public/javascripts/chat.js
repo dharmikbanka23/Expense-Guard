@@ -50,6 +50,8 @@ document.querySelector('.right-toggle').addEventListener('click', () => {
 
 // Function to update the chat mode
 function updateChatMode() {
+  const chatHeading = document.getElementById('chat-heading');
+  const chatHeadingDescription = document.getElementById('chat-heading-description');
   const chatFooter = document.querySelector('.chat-footer');
   const leftToggle = document.querySelector('.left-toggle');
   const rightToggle = document.querySelector('.right-toggle');
@@ -63,8 +65,13 @@ function updateChatMode() {
   // Toggle the class based on the current mode
   if (currentChatMode === 'ExpenseGPT') {
     leftToggle.classList.add('toggled');
-  } else {
+    chatHeading.innerHTML = 'ExpenseGPT';
+    chatHeadingDescription.innerHTML = '(ExpenseGPT is a conversational assistant)';
+  } 
+  else {
     rightToggle.classList.add('toggled');
+    chatHeading.innerHTML = 'Universal Chat';
+    chatHeadingDescription.innerHTML = '(Please be respectful and professional)';
   }
 
   // Implement logic to switch between different chat modes here

@@ -22,7 +22,7 @@ app.set('port', port);
 var gptMessage = [];
 
 // Add a maximum size for the conversation record
-const MAX_CONVERSATION_SIZE = 10;
+const MAX_CONVERSATION_SIZE = 8;
 
 var server; // Declare the server variable outside the connectDB promise block
 
@@ -63,8 +63,25 @@ connectDB()
           const conversationRecord = userObject.conversationRecord;
           conversationRecord.push({ role: "user", content: message });
 
-          // Broadcast the GPT message
-          let gptResponse = await gpt.askExpenseGPT(conversationRecord, username);
+          let gptResponse;
+          try {
+            // Ask chatgpt the message
+            gptResponse = await gpt.askExpenseGPT(conversationRecord, username);
+          } 
+          catch (error) {
+            if (error.code === 'rate_limit_exceeded') {
+              // Rate limit exceeded
+              gptResponse = "ExpenseGPT is currently experiencing high demand. Please try again in a moment.";
+              console.log(error);
+            } 
+            else {
+              // Other error network issue, server error
+              gptResponse = "Sorry, we're currently unable to connect to ExpenseGPT. Please try again later.";
+              console.log(error);
+            }
+          }
+
+          // Broadcast the GPT response
           io.emit('chatMessage', gptResponse, 'ExpenseGPT', room);
 
           // Add the GPT response to the conversation record
