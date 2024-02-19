@@ -33,16 +33,33 @@ connectDB()
       // Log a message when a client connects
       console.log('A user connected');
 
-      // Handle chat messages
-      socket.on('chatMessage', async (message, user) => {
+      // Handle joining a user to the global chat
+      socket.on('joinUserRoom', (username) => {
+        const userRoom = `global`;
+        socket.join(userRoom);
+      });
 
-        // Broadcast the message and username to all connected clients
-        io.emit('chatMessage', message, user);
+      // Handle joining a room for ExpenseGPT messages based on the username
+      socket.on('joinExpenseGPTRoom', (username) => {
+        const expenseGPTRoom = `expenseGPT-${username}`;
+        socket.join(expenseGPTRoom);
+      });
 
-        // Check if the message wants to communicate with ExpenseGPT
-        if (message[0] === '!') {
-          let gptResponse = await gpt.askExpenseGPT(message.slice(1));
-          io.emit('chatMessage', gptResponse, 'ExpenseGPT');
+      // Handle sending a message
+      socket.on('chatMessage', async (message, user, room) => {
+
+        if (room === 'global') {
+          // Broadcast the message to the global room
+          io.emit('chatMessage', message, user, room);
+        }
+        else if (room.startsWith('expenseGPT')) {
+          // Check if the message is for ExpenseGPT
+          // Broadcast the user message 
+          io.emit('chatMessage', message, user, room);
+
+          // Broadcast the GPT message
+          let gptResponse = await gpt.askExpenseGPT(message);
+          io.emit('chatMessage', gptResponse, 'ExpenseGPT', room);
         }
 
       });

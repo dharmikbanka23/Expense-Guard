@@ -50,7 +50,7 @@ function updateChatMode() {
   const rightToggle = document.querySelector('.right-toggle');
   const gptMessage = document.getElementById('gptMessages');
   const chatMessage = document.getElementById('chatMessages');
-  
+
   // Reset toggled class for both left and right toggles
   leftToggle.classList.remove('toggled');
   rightToggle.classList.remove('toggled');
@@ -75,8 +75,10 @@ function updateChatMode() {
   }
 }
 
+
 // Listen for incoming messages
-socket.on('chatMessage', (message, user) => {
+socket.on('chatMessage', (message, user, room) => {
+
   // Assuming you have a variable 'currentUserUsername' that stores the current user's username
   const isUser = user === username;
 
@@ -94,7 +96,6 @@ socket.on('chatMessage', (message, user) => {
   if (user === 'ExpenseGPT') {
     messageContainer.className += ' expenseGPT-message';
   }
-  
   const usernameElement = document.createElement('p');
   usernameElement.textContent = user;
   usernameElement.className = 'username'; // Add a class for styling if needed
@@ -115,12 +116,12 @@ socket.on('chatMessage', (message, user) => {
   messageContainer.appendChild(messageElement);
   messageContainer.appendChild(timestampElement);
 
-  // Append the container to the chat messages
-  if (user === 'ExpenseGPT') {
-    gptMessages.appendChild(messageContainer);
-  }
-  else{
+  // Check the room it is coming from and append message accordingly
+  if (room === 'global') {
     chatMessages.appendChild(messageContainer);
+  }
+  else if (room.replace('expenseGPT-', '') === username) {
+    gptMessages.appendChild(messageContainer);
   }
 
   // Scroll to the bottom of the chat messages
@@ -142,8 +143,11 @@ function sendMessage() {
     // Get the JWT token from wherever you store it (e.g., cookies)
     const user = username;
 
+    // Get the room name based on the toggle
+    const room = currentChatMode === 'ExpenseGPT' ? `expenseGPT-${user}` : 'global';
+    
     // Only emit the message if it's not empty
-    socket.emit('chatMessage', message, user);
+    socket.emit('chatMessage', message, user, room);
     messageInput.value = ''; // Clear input field
   }
 }
