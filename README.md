@@ -1,6 +1,6 @@
 # Expense Guard Project
 
-## Overview
+## [Website URL](http://expenseguard.ddns.net/)
 
 The **Expense Guard Project** is designed to help individuals manage their expenses effectively. This document provides an overview of the project, including its features, technologies used, and installation instructions.
 
@@ -13,7 +13,7 @@ The **Expense Guard Project** is designed to help individuals manage their expen
 - **Custom Configurations:** Customize budgets and set notification preferences for wellness report.
 - **Graphical Reports:** Visualize expense data through charts and graphs.
 - **User Authentication:** Secure access with user accounts and authentication.
-- **Chat Application:** Chat with random users who are online or with ExpenseGPT. [Experimental]
+- **Chat Application:** Chat with random users who are online or with ExpenseGPT.
 
 ## Technologies Used
 
