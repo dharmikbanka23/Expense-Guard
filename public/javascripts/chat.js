@@ -19,7 +19,8 @@ document.getElementById('toggleChatButton').addEventListener('click', () => {
   } else {
     chatModal.style.display = 'block';
     // Scroll to the bottom of the chat messages when the chat opens
-    scrollToBottom();
+    scrollGPTChat();
+    scrollUniversalChat();
   }
 });
 
@@ -134,20 +135,25 @@ socket.on('chatMessage', (message, user, room) => {
     // Check the room it is coming from and append message accordingly
     if (room === 'global') {
       chatMessages.appendChild(messageContainer);
+      scrollUniversalChat();
     }
     else if (room.replace('expenseGPT-', '') === username) {
       gptMessages.appendChild(messageContainer);
+      scrollGPTChat();
     }
   }
-
-  // Scroll to the bottom of the chat messages
-  scrollToBottom();
 });
 
 // Function to scroll to the bottom of the chat messages
-function scrollToBottom() {
+function scrollUniversalChat() {
   const chatMessages = document.getElementById('chatMessages');
   chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to scroll to the bottom of the gpt messages
+function scrollGPTChat() {
+  const gptMessages = document.getElementById('gptMessages');
+  gptMessages.scrollTop = gptMessages.scrollHeight;
 }
 
 // Function to send a message

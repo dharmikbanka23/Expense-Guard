@@ -18,7 +18,11 @@ var socketIO = require('socket.io'); // Add this line to import socket.io
 var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
+// Store all the user conversation records here
 var gptMessage = [];
+
+// Add a maximum size for the conversation record
+const MAX_CONVERSATION_SIZE = 10;
 
 var server; // Declare the server variable outside the connectDB promise block
 
@@ -40,7 +44,7 @@ connectDB()
       io.emit('chatMessage', `${username} has joined the chat!`, 'server-message', 'global');
 
       // Add user record in the gptMessage record
-      gptMessage.push({ user: username })
+      gptMessage.push({ username: username, conversationRecord: [] });
 
       // Handle sending a message
       socket.on('chatMessage', async (message, user, room) => {
@@ -54,9 +58,27 @@ connectDB()
           // Broadcast the user message 
           io.emit('chatMessage', message, user, room);
 
+          // Get the user object from the gptMessage record
+          const userObject = gptMessage.find(obj => obj.username === username);
+          const conversationRecord = userObject.conversationRecord;
+          conversationRecord.push({ role: "user", content: message });
+
           // Broadcast the GPT message
-          let gptResponse = await gpt.askExpenseGPT(message, user);
+          let gptResponse = await gpt.askExpenseGPT(conversationRecord, username);
           io.emit('chatMessage', gptResponse, 'ExpenseGPT', room);
+
+          // Add the GPT response to the conversation record
+          conversationRecord.push({ role: "assistant", content: gptResponse });
+
+          // Limit the conversation record size
+          if (conversationRecord.length > MAX_CONVERSATION_SIZE) {
+            conversationRecord.shift(); // Remove the oldest message
+            conversationRecord.shift(); // Remove the second oldest message
+          }
+
+          // Rewrite the gptMessage record in the gpt array
+          gptMessage.find(obj => obj.username === username).conversationRecord = conversationRecord;
+
         }
 
       });
@@ -67,6 +89,9 @@ connectDB()
 
         // Display the server message on the chat window
         io.emit('chatMessage', `${username} has left the chat!`, 'server-message', 'global');
+
+        // Remove record from the GPT array
+        gptMessage = gptMessage.filter(obj => obj.username !== username);
       });
     });
 
