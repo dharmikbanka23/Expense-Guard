@@ -18,6 +18,8 @@ var socketIO = require('socket.io'); // Add this line to import socket.io
 var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
+var gptMessage = [];
+
 var server; // Declare the server variable outside the connectDB promise block
 
 // Connect to the database before creating the HTTP server
@@ -30,20 +32,15 @@ connectDB()
     var io = socketIO(server);
 
     io.on('connection', (socket) => {
-      // Log a message when a client connects
-      console.log('A user connected');
+      // When a user connects, log their username to the console
+      const username = socket.handshake.query.username;
+      console.log(`\nUser connected with username: ${username}\n`);
 
-      // Handle joining a user to the global chat
-      socket.on('joinUserRoom', (username) => {
-        const userRoom = `global`;
-        socket.join(userRoom);
-      });
+      // Display the server message on the chat window
+      io.emit('chatMessage', `${username} has joined the chat!`, 'server-message', 'global');
 
-      // Handle joining a room for ExpenseGPT messages based on the username
-      socket.on('joinExpenseGPTRoom', (username) => {
-        const expenseGPTRoom = `expenseGPT-${username}`;
-        socket.join(expenseGPTRoom);
-      });
+      // Add user record in the gptMessage record
+      gptMessage.push({ user: username })
 
       // Handle sending a message
       socket.on('chatMessage', async (message, user, room) => {
@@ -58,7 +55,7 @@ connectDB()
           io.emit('chatMessage', message, user, room);
 
           // Broadcast the GPT message
-          let gptResponse = await gpt.askExpenseGPT(message);
+          let gptResponse = await gpt.askExpenseGPT(message, user);
           io.emit('chatMessage', gptResponse, 'ExpenseGPT', room);
         }
 
@@ -66,7 +63,10 @@ connectDB()
 
       // Handle disconnect
       socket.on('disconnect', () => {
-        console.log('A user disconnected');
+        console.log(`\nUser disconnected: ${username}\n`);
+
+        // Display the server message on the chat window
+        io.emit('chatMessage', `${username} has left the chat!`, 'server-message', 'global');
       });
     });
 

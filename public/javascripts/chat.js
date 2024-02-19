@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io({
+  query: {
+    username: username,
+  }
+});
 const chatModal = document.getElementById('chatModal');
 let currentChatMode;
 
@@ -88,40 +92,52 @@ socket.on('chatMessage', (message, user, room) => {
   // Create a timestamp using Moment.js
   const timestamp = moment().format('h:mm A');
 
-  // Create a new message container element
-  const messageContainer = document.createElement('div');
-  messageContainer.className = isUser ? 'message-container user-message' : 'message-container other-message';
-
-  // Check if it is ExpenseGPT message
-  if (user === 'ExpenseGPT') {
-    messageContainer.className += ' expenseGPT-message';
+  // Check for server messages
+  if (user ==='server-message') {
+    if (!message.startsWith(username)) {
+      // Append the message to the chat window
+      const messageElement = document.createElement('p');
+      messageElement.className ='server-message';
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+    }
   }
-  const usernameElement = document.createElement('p');
-  usernameElement.textContent = user;
-  usernameElement.className = 'username'; // Add a class for styling if needed
-
-  // Create a new message element with timestamp
-  const messageElement = document.createElement('p');
-  messageElement.textContent = message;
-
-  // Create a timestamp element with lower font size
-  const timestampElement = document.createElement('p');
-  timestampElement.textContent = timestamp;
-  timestampElement.className = 'timestamp';
-
-  // Append the message and timestamp to the container
-  if (!isUser) {
-    messageContainer.appendChild(usernameElement);
-  }
-  messageContainer.appendChild(messageElement);
-  messageContainer.appendChild(timestampElement);
-
-  // Check the room it is coming from and append message accordingly
-  if (room === 'global') {
-    chatMessages.appendChild(messageContainer);
-  }
-  else if (room.replace('expenseGPT-', '') === username) {
-    gptMessages.appendChild(messageContainer);
+  else{
+    // Create a new message container element
+    const messageContainer = document.createElement('div');
+    messageContainer.className = isUser ? 'message-container user-message' : 'message-container other-message';
+  
+    // Check if it is ExpenseGPT message
+    if (user === 'ExpenseGPT') {
+      messageContainer.className += ' expenseGPT-message';
+    }
+    const usernameElement = document.createElement('p');
+    usernameElement.textContent = user;
+    usernameElement.className = 'username'; // Add a class for styling if needed
+  
+    // Create a new message element with timestamp
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+  
+    // Create a timestamp element with lower font size
+    const timestampElement = document.createElement('p');
+    timestampElement.textContent = timestamp;
+    timestampElement.className = 'timestamp';
+  
+    // Append the message and timestamp to the container
+    if (!isUser) {
+      messageContainer.appendChild(usernameElement);
+    }
+    messageContainer.appendChild(messageElement);
+    messageContainer.appendChild(timestampElement);
+  
+    // Check the room it is coming from and append message accordingly
+    if (room === 'global') {
+      chatMessages.appendChild(messageContainer);
+    }
+    else if (room.replace('expenseGPT-', '') === username) {
+      gptMessages.appendChild(messageContainer);
+    }
   }
 
   // Scroll to the bottom of the chat messages
