@@ -104,6 +104,36 @@ The **Expense Guard Project** is designed to help individuals manage their expen
    
    For security, always log out of your account when you're done using the application. This ensures that your financial information remains secure.
 
+## Test Coverage
+
+----------------------------|---------|----------|---------|---------|-------------------
+File                        | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------------|---------|----------|---------|---------|-------------------
+All files                   |     100 |      100 |     100 |     100 |                   
+ Expense Guard              |     100 |      100 |     100 |     100 |                   
+  app.js                    |     100 |      100 |     100 |     100 |                   
+ Expense Guard/controllers  |     100 |      100 |     100 |     100 |                   
+  mailController.js         |     100 |      100 |     100 |     100 |                   
+  notificationController.js |     100 |      100 |     100 |     100 |                   
+  s3Controller.js           |     100 |      100 |     100 |     100 |                   
+ Expense Guard/middleware   |     100 |      100 |     100 |     100 |                   
+  authenticateUser.js       |     100 |      100 |     100 |     100 |                   
+  authenticatedUser.js      |     100 |      100 |     100 |     100 |                   
+ Expense Guard/models       |     100 |      100 |     100 |     100 |                   
+  configurationModel.js     |     100 |      100 |     100 |     100 |                   
+  expenseModel.js           |     100 |      100 |     100 |     100 |                   
+  userModel.js              |     100 |      100 |     100 |     100 |                   
+ Expense Guard/routes       |     100 |      100 |     100 |     100 |                   
+  adjust.js                 |     100 |      100 |     100 |     100 |                   
+  error.js                  |     100 |      100 |     100 |     100 |                   
+  expenses.js               |     100 |      100 |     100 |     100 |                   
+  index.js                  |     100 |      100 |     100 |     100 |                   
+  login.js                  |     100 |      100 |     100 |     100 |                   
+  logout.js                 |     100 |      100 |     100 |     100 |                   
+  register.js               |     100 |      100 |     100 |     100 |                   
+  statistics.js             |     100 |      100 |     100 |     100 |                   
+----------------------------|---------|----------|---------|---------|-------------------
+
 ## Contributors
 
 - [Banka Dharmik](https://github.com/dharmikbanka23)
