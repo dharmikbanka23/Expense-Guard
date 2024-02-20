@@ -6,7 +6,7 @@
     "start": "node --watch ./bin/www",
     "test": "mocha test/**/*.test.js",
     "test:watch": "mocha --watch test/**/*.test.js",
-    "custom-test": "mocha test/routes/**.test.js",
+    "custom-test": "mocha test/models/**.test.js",
     "coverage": "nyc npm test"
   },
   "dependencies": {
