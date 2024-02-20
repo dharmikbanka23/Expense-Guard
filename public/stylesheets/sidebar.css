@@ -80,7 +80,7 @@ option{
 }
 
 
-/* tetsing purpose */
+/* Media */
 @media screen and (max-width: 1250px) {
     .sidebar {
         width: 250px;
