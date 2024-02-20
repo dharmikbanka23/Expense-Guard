@@ -1,6 +1,12 @@
 const socket = io({
   query: {
     username: username,
+    monthSpent: monthSpent,
+    monthBudget: monthBudget,
+    monthRemaining: monthRemaining,
+    monthPrediction: monthPrediction,
+    monthCategory: JSON.stringify(monthCategory),
+    healthCheck: healthCheck
   }
 });
 const chatModal = document.getElementById('chatModal');

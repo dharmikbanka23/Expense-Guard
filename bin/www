@@ -22,7 +22,7 @@ app.set('port', port);
 var gptMessage = [];
 
 // Add a maximum size for the conversation record
-const MAX_CONVERSATION_SIZE = 8;
+const MAX_CONVERSATION_SIZE = 6;
 
 var server; // Declare the server variable outside the connectDB promise block
 
@@ -36,8 +36,18 @@ connectDB()
     var io = socketIO(server);
 
     io.on('connection', (socket) => {
-      // When a user connects, log their username to the console
+      // Get data from the client
       const username = socket.handshake.query.username;
+      const data = {
+        monthSpent : socket.handshake.query.monthSpent,
+        monthBudget : socket.handshake.query.monthBudget,
+        monthRemaining : socket.handshake.query.monthRemaining,
+        monthPrediction : socket.handshake.query.monthPrediction,
+        monthCategory: socket.handshake.query.monthCategory,
+        healthCheck : socket.handshake.query.healthCheck
+      }
+      
+      // When a user connects, log their username to the console
       console.log(`\nUser connected with username: ${username}\n`);
 
       // Display the server message on the chat window
@@ -66,7 +76,7 @@ connectDB()
           let gptResponse;
           try {
             // Ask chatgpt the message
-            gptResponse = await gpt.askExpenseGPT(conversationRecord, username);
+            gptResponse = await gpt.askExpenseGPT(conversationRecord, username, data);
           } 
           catch (error) {
             if (error.code === 'rate_limit_exceeded') {

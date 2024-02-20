@@ -166,11 +166,11 @@
     <button id="sendButton" class="send-button">Send</button>
     <div class="chat-footer">
       <div class="left-toggle">
-        <img src = "/images/icons/gpt-toggle.png">
+        <img src="/images/icons/gpt-toggle.png">
         <p>ExpenseGPT</p>
       </div>
       <div class="right-toggle">
-        <img src = "/images/icons/chat-toggle.png">
+        <img src="/images/icons/chat-toggle.png">
         <p>Universal Chat</p>
       </div>
     </div>
@@ -179,6 +179,66 @@
 </body>
 
 </html>
+
+<script>
+  // Declare inputs for ExpenseGPT
+  var monthSpent, monthBudget, monthRemaining, monthPrediction, yearPrediction, healthCheck;
+
+  // Data to have
+  var expenses = JSON.parse('<%- JSON.stringify(expenses) %>');
+  var configuration = JSON.parse('<%- JSON.stringify(configuration) %>');
+
+  // Fetch the current month from the date
+  const day = new Date();
+  const selectedMonth = new Date().toISOString().slice(0, 7);
+
+  // Fetch the monthly budget for the selected month from configuration
+  const monthlyBudgetForMonth = configuration.monthlyBudget.find(entry => entry.year === parseInt(selectedMonth.split('-')[0]) && entry.month === parseInt(selectedMonth.split('-')[1]));
+  const monthlyBudget = monthlyBudgetForMonth ? monthlyBudgetForMonth.budget : configuration.defaultMonthlyBudget;
+
+  // Calculate and display total spent, total budget, and remaining budget
+  const totalSpentMonth = expenses.reduce((total, expense) => total + expense.amount, 0);
+
+  // Calculate prediction rates
+  const monthlyPredictionSpending = (totalSpentMonth / day.getDate()) * new Date(day.getFullYear(), day.getMonth() + 1, 0).getDate();
+
+  // Get the spent percentage
+  const spentPercentage = (monthlyPredictionSpending / monthlyBudget) * 100;
+
+  // Get the category of the month spending
+  var monthCategory = {
+    "Food": 0,
+    "Housing": 0,
+    "Transportation": 0,
+    "Entertainment": 0,
+    "Utilities": 0,
+    "Health": 0,
+    "Education": 0,
+    "Personal Care": 0,
+    "Other": 0
+  }
+
+  expenses.forEach((expense)=>{
+    monthCategory[expense.category]+=expense.amount
+  });
+
+  // Assign inputs for ExpenseGPT
+  monthSpent = totalSpentMonth;
+  monthBudget = monthlyBudget;
+  monthRemaining = monthBudget - monthSpent;
+  monthPrediction = monthlyPredictionSpending;
+
+  // Get the health check
+  if (spentPercentage <= 80) {
+    healthCheck = "Healthy Range";
+  }
+  else if (spentPercentage <= 95) {
+    healthCheck = "Approaching Limit";
+  }
+  else {
+    healthCheck = "Exceeding Budget";
+  }
+</script>
 
 <script defer>
   var expenses = JSON.parse('<%- JSON.stringify(expenses) %>');
@@ -389,9 +449,11 @@
 
     if (spentPercentage <= 80) {
       notificationMessage = "Your spending is within a healthy range. Keep up the good work!";
-    } else if (spentPercentage <= 95) {
+    }
+    else if (spentPercentage <= 95) {
       notificationMessage = "Your spending is approaching the budget limit. Consider reviewing your expenses.";
-    } else {
+    }
+    else {
       notificationMessage = "Your spending is exceeding the budget. It's essential to reassess and adjust your financial plan.";
     }
 

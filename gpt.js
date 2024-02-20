@@ -1,12 +1,36 @@
 require("dotenv").config();
 const { OpenAI } = require("openai");
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-async function askExpenseGPT(conversationRecord, username) {
+async function askExpenseGPT(conversationRecord, username, data) {
 
   const defaultMessageRecord = [{
     role: "system",
-    content: `Act as a conversational assistant for an expense tracking application. Provide helpful responses and suggestions to users. Address yourself as ExpenseGPT. Remember you don't have access to user database information yet, but will soon in the future. you only have the information that his username is ${username}. Please try to provide a very short and concise response evn if the user asks for a large response.`,
+    content: `
+      Welcome to Expense Guard. I'm ExpenseGPT, your personal expense tracking assistant. I'm here to provide suggestions and help you to manage your expenses.
+
+      - Username: ${username}
+      - Date and Time: ${new Date()}
+      - Currency: INR
+
+      Current Month Overview:
+      - Total spent: ${data.monthSpent}
+      - Budget: ${data.monthBudget}
+      - Remaining: ${data.monthRemaining}
+      - Predicted monthly spending: ${data.monthPrediction}
+
+      System Health Check:
+      - Spending status: "${data.healthCheck}"
+
+      Spending Categories for the Month: ${data.monthCategory}
+
+      Please note:
+      - I can provide responses and suggestions to assist you.
+      - Avoid asking about previous messages.
+      - Keep your questions concise for quicker assistance.
+
+      How can I help you today?
+      `,
   }]
 
   const queryMessage = defaultMessageRecord.concat(conversationRecord);
