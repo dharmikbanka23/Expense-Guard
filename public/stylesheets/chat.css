@@ -146,3 +146,24 @@
   color: grey;
   margin: 7.5px 0;
 }
+
+@media (max-width: 768px) {
+  #toggleChatButton, #toggleChatButton:hover{
+    width: 35px;
+    height: 35px;
+    bottom: 10px;
+    right: 10px;
+  }
+  .chat-modal{
+    width: 300px;
+    bottom: 50px;
+    right: 10px;
+  }
+  .left-toggle p, .right-toggle p{
+    font-size: 14px;
+  }
+  .left-toggle img, .right-toggle img{
+    width: 15px;
+    margin: 0 5px;
+  }
+}

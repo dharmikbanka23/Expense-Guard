@@ -295,12 +295,17 @@
     };
 
     const chart = new google.visualization.ComboChart(document.querySelector('.bar-chart-yearly'));
-    chart.draw(data, options);
 
-    // // Initial drawing
-    // drawChart();
-    // // Redraw the chart when the window is resized
-    // window.addEventListener('resize', drawChart);
+    // Embed in a function
+    function drawChart() {
+      chart.draw(data, options);
+    }
+
+    // Initial drawing
+    drawChart();
+
+    // Redraw the chart when the window is resized
+    window.addEventListener('resize', drawChart);
   }
 
   // Function to draw Pie Chart
@@ -331,7 +336,17 @@
     };
 
     const chart = new google.visualization.PieChart(document.querySelector('.pie-chart-yearly'));
-    chart.draw(data, options);
+
+    // Embed in a function
+    function drawChart() {
+      chart.draw(data, options);
+    }
+
+    // Initial drawing
+    drawChart();
+
+    // Redraw the chart when the window is resized
+    window.addEventListener('resize', drawChart);
   }
 
 
@@ -413,7 +428,17 @@
     };
 
     const chart = new google.visualization.LineChart(document.querySelector('.line-chart-monthly'));
-    chart.draw(data, options);
+    
+    // Embed in a function
+    function drawChart() {
+      chart.draw(data, options);
+    }
+
+    // Initial drawing
+    drawChart();
+
+    // Redraw the chart when the window is resized
+    window.addEventListener('resize', drawChart);
   }
 
 
@@ -445,7 +470,17 @@
     };
 
     const chart = new google.visualization.PieChart(document.querySelector('.pie-chart-monthly'));
-    chart.draw(data, options);
+    
+    // Embed in a function
+    function drawChart() {
+      chart.draw(data, options);
+    }
+
+    // Initial drawing
+    drawChart();
+
+    // Redraw the chart when the window is resized
+    window.addEventListener('resize', drawChart);
   }
 
 
