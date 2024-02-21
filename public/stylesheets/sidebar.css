@@ -147,6 +147,9 @@ option{
     .sidebar{
         width: auto !important;
     }
+    .content {
+        width: auto !important;
+    }
 }
 
 @media screen and (max-width: 1250px) {
