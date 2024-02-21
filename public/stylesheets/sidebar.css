@@ -64,7 +64,7 @@ body {
 }
 
 .content {
-    padding: 20px !important;
+    padding: 20px;
     /* background-color: aqua; */
     width: 80%;
     height: 100%;
@@ -122,6 +122,10 @@ option{
     }
     .desktop{
         display: none;
+    }
+
+    option{
+        font-size: 12px !important;
     }
 
     .header img{

@@ -353,7 +353,17 @@
     };
 
     const chart = new google.visualization.LineChart(document.querySelector('.monthly-spending-chart'));
-    chart.draw(data, options);
+    
+    // Embed in a function
+    function drawChart() {
+      chart.draw(data, options);
+    }
+
+    // Initial drawing
+    drawChart();
+
+    // Redraw the chart when the window is resized
+    window.addEventListener('resize', drawChart);
   }
 
   // Function to get the day of the year (DOY)
