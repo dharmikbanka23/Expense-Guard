@@ -96,7 +96,7 @@ input[type="submit"]{
 }
 
 /* Media */
-@media (max-width: 500px) {
+@media (max-width: 576px) {
     .left-container-text h1{
         font-size: 30px;
     }

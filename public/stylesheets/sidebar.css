@@ -116,6 +116,13 @@ option{
 /* Media */
 
 /* Responsive adjustments */
+
+@media (max-width: 576px) {
+    .content{
+        padding: 10px;
+    }    
+}
+
 @media (max-width: 768px) {
     .mobile{
         display: block;
@@ -123,7 +130,6 @@ option{
     .desktop{
         display: none;
     }
-
     option{
         font-size: 12px !important;
     }
@@ -153,7 +159,7 @@ option{
         width: auto !important;
     }
     .content {
-        width: auto !important;
+        width: 100% !important;
         overflow: scroll;
     }
 }

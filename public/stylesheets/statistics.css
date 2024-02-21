@@ -97,16 +97,63 @@
 /* Media */
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+
+@media (max-width: 576px) {
   .top h1{
-    font-size: 20px;
+    font-size: 24px;
   }
+  .graphs{
+    margin: 0;
+  }
+  .graphs h3{
+    font-size: 18px;
+  }
+
+  
   .yearly, .monthly{
     flex-direction: column;
     height: auto;
+    padding: 10px;
   }
-  .medium, .small-1, .small-2 {
+
+
+  .medium, .small-1{
     width: auto;
     height: 150px;
+  }
+  .small-2 {
+    width: auto;
+    height: 160px;
+    padding: 0;
+  }
+
+
+  .total-spent, .total-budget, .remaining{
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  .total-spent h4, .total-budget h4, .remaining h4{
+    font-size: 14px;
+  }
+  .total-spent p, .total-budget p, .remaining p{
+    font-size: 24px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .total-spent p, .total-budget p, .remaining p{
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  .yearly, .monthly{
+    height: auto;
+  }
+  .medium{
+    width: 40%;
+  }
+  .small-1, .small-2{
+    width: 30%;
   }
 }

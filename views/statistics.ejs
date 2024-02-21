@@ -298,6 +298,14 @@
 
     // Embed in a function
     function drawChart() {
+
+      // Add media query to adjust font size based on screen width
+      if (window.innerWidth < 576) {
+        options.titleTextStyle.fontSize = 14;
+      } else {
+        options.titleTextStyle.fontSize = 16;
+      }
+
       chart.draw(data, options);
     }
 
@@ -339,6 +347,14 @@
 
     // Embed in a function
     function drawChart() {
+
+      // Add media query to adjust font size based on screen width
+      if (window.innerWidth < 576) {
+        options.titleTextStyle.fontSize = 14;
+      } else {
+        options.titleTextStyle.fontSize = 16;
+      }
+
       chart.draw(data, options);
     }
 
@@ -428,9 +444,17 @@
     };
 
     const chart = new google.visualization.LineChart(document.querySelector('.line-chart-monthly'));
-    
+
     // Embed in a function
     function drawChart() {
+
+      // Add media query to adjust font size based on screen width
+      if (window.innerWidth < 576) {
+        options.titleTextStyle.fontSize = 14;
+      } else {
+        options.titleTextStyle.fontSize = 16;
+      }
+
       chart.draw(data, options);
     }
 
@@ -470,9 +494,17 @@
     };
 
     const chart = new google.visualization.PieChart(document.querySelector('.pie-chart-monthly'));
-    
+
     // Embed in a function
     function drawChart() {
+
+      // Add media query to adjust font size based on screen width
+      if (window.innerWidth < 576) {
+        options.titleTextStyle.fontSize = 14;
+      } else {
+        options.titleTextStyle.fontSize = 16;
+      }
+
       chart.draw(data, options);
     }
 
