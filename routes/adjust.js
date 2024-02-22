@@ -58,7 +58,7 @@ router.post('/defaultMonthlyBudget', authenticate, async function (req, res) {
 });
 
 // Set default yearly budget
-router.post('/defaultYearlyBudget', authenticate, async function (req, res, next) {
+router.post('/defaultYearlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
   try {
@@ -72,7 +72,7 @@ router.post('/defaultYearlyBudget', authenticate, async function (req, res, next
 });
 
 // Set current monthly budget
-router.post('/currentMonthlyBudget', authenticate, async function (req, res, next) {
+router.post('/currentMonthlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
   const currentDate = new Date();
@@ -123,7 +123,7 @@ router.post('/currentMonthlyBudget', authenticate, async function (req, res, nex
 });
 
 // Set current yearly budget 
-router.post('/currentYearlyBudget', authenticate, async function (req, res, next) {
+router.post('/currentYearlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
   const currentDate = new Date();
@@ -170,7 +170,7 @@ router.post('/currentYearlyBudget', authenticate, async function (req, res, next
 });
 
 // Set custom monthly budget
-router.post('/customMonthlyBudget', authenticate, async function (req, res, next) {
+router.post('/customMonthlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
 
@@ -218,7 +218,7 @@ router.post('/customMonthlyBudget', authenticate, async function (req, res, next
 });
 
 // Set custom yearly budget
-router.post('/customYearlyBudget', authenticate, async function (req, res, next) {
+router.post('/customYearlyBudget', authenticate, async function (req, res) {
 
   const username = req.user.username;
 
@@ -263,7 +263,7 @@ router.post('/customYearlyBudget', authenticate, async function (req, res, next)
 });
 
 // Set notification frequency
-router.post('/notificationFrequency', authenticate, async function (req, res, next) {
+router.post('/notificationFrequency', authenticate, async function (req, res) {
 
   const username = req.user.username;
 
@@ -278,7 +278,7 @@ router.post('/notificationFrequency', authenticate, async function (req, res, ne
 });
 
 // Set notification channels
-router.post('/notificationChannels', authenticate, async function (req, res, next) {
+router.post('/notificationChannels', authenticate, async function (req, res) {
 
   const username = req.user.username;
 
