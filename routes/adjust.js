@@ -11,6 +11,7 @@ var configurationModel = require('../models/configurationModel'); //Configuratio
 router.get('/', authenticate, async function (req, res) {
 
   const username = req.user.username;
+  const email = req.user.email;
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.toLocaleString('en-US', { month: 'short' });
@@ -27,6 +28,8 @@ router.get('/', authenticate, async function (req, res) {
     const currentYearlyBudget = currentYearlyBudgetEntry ? currentYearlyBudgetEntry.budget : userConfig.defaultYearlyBudget;
 
     res.render('adjust', {
+      username,
+      email,
       currentYear,
       currentMonth,
       defaultMonthlyBudget: userConfig.defaultMonthlyBudget,
