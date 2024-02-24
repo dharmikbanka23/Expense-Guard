@@ -6,10 +6,10 @@
 .configurations {
   display: flex;
   flex-direction: column;
-  /* background-color: aqua; */
-  padding: 10px;
-  margin: 10px 0;
+  padding: 0 10px;
+  margin-top: 10px;
   height: 100%;
+  overflow: scroll;
 }
 
 .full-box{
@@ -156,7 +156,7 @@
     font-size: 24px;
   }
   .configurations{
-    margin: 0;
+    margin-top: 0;
   }
   .full-box{
     margin: 0;

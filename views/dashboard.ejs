@@ -34,16 +34,24 @@
     <div class="menu">
       <ul>
         <li>
-          <a class="active"><img src="/images/icons/dashboard_dark.svg"><p>Dashboard</p></a>
+          <a class="active"><img src="/images/icons/dashboard_dark.svg">
+            <p>Dashboard</p>
+          </a>
         </li>
         <li>
-          <a href="/statistics"><img src="/images/icons/statistics_white.png"><p>Statistics</p></a>
+          <a href="/statistics"><img src="/images/icons/statistics_white.png">
+            <p>Statistics</p>
+          </a>
         </li>
         <li>
-          <a href="/expenses"><img src="/images/icons/expenses_white.png"><p>Expenses</p></a>
+          <a href="/expenses"><img src="/images/icons/expenses_white.png">
+            <p>Expenses</p>
+          </a>
         </li>
         <li>
-          <a href="/adjust"><img src="/images/icons/adjust_white.png"><p>Adjust</p></a>
+          <a href="/adjust"><img src="/images/icons/adjust_white.png">
+            <p>Adjust</p>
+          </a>
         </li>
       </ul>
     </div>
@@ -51,7 +59,9 @@
       <div class="menu">
         <ul>
           <li>
-            <a href="/logout"><img src="/images/icons/profile_white.png"><p>Logout</p></a>
+            <a href="/logout"><img src="/images/icons/profile_white.png">
+              <p>Logout</p>
+            </a>
           </li>
         </ul>
       </div>
@@ -68,37 +78,36 @@
       <div class="left">
         <h3>Recent Expenses</h3>
 
-        <div class="table-area">
-          <table class="table">
-            <thead>
-              <tr>
-                <th data-sort="string" style="width: 40%">Category</th>
-                <th data-sort="string" style="width: 30%">Expense Date</th>
-                <th data-sort="int" style="width: 30%">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (let expense of expenseRecord) { %>
-                <tr id="<%= expense._id %>">
-                  <td style="width: 40%">
-                    <%= expense.category %>
-                  </td>
-                  <td style="width: 30%">
-                    <%= expense.expenseDate.toISOString().split('T')[0] %>
-                  </td>
-                  <td style="width: 30%">
-                    <%= expense.amount %>
-                  </td>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 40%">Category</th>
+              <th style="width: 30%">Date</th>
+              <th style="width: 30%">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i=0; i < expenseRecord.length; i++) { %>
+              <% const expense=expenseRecord[i]; %>
+                <tr id="<%= expense._id %>" <% if (i>= 5) { %> class="hidden-row" <% } %>>
+                    <td style="width: 40%">
+                      <%= expense.category %>
+                    </td>
+                    <td style="width: 30%">
+                      <%= expense.expenseDate.toISOString().split('T')[0] %>
+                    </td>
+                    <td style="width: 30%">
+                      <%= expense.amount %>
+                    </td>
                 </tr>
                 <% } %>
-            </tbody>
-          </table>
-        </div>
+          </tbody>
+        </table>
 
       </div>
       <div class="right">
         <div class="up">
-          <h3>Monthly Spending Overview</h3>
+          <h3>Monthly Spending View</h3>
           <div class="monthly-spending-chart"></div>
         </div>
         <div class="down">
@@ -116,16 +125,20 @@
 
               <div class="prediction-area">
                 <h4>Performance Check</h4>
-                <div class="dots-container">
-                  <div class="dot" id="dot-on-track"></div>
-                  <div class="dot" id="dot-approaching-limit"></div>
-                  <div class="dot" id="dot-exceeding-budget"></div>
+                <div class="performance-area">
+                  <div class="performance-container">
+                    <div class="dot" id="dot-on-track"></div>
+                    <p>On<br>Track</p>
+                  </div>
+                  <div class="performance-container">
+                    <div class="dot" id="dot-approaching-limit"></div>
+                    <p>Approaching<br>Limit</p>
+                  </div>
+                  <div class="performance-container">
+                    <div class="dot" id="dot-exceeding-budget"></div>
+                    <p>Exceeding<br>Budget</p>
+                  </div>
                 </div>
-                <div class="labels-container">
-                  <pre>        On                      Approaching                Exceeding</pre>
-                  <pre>   Track                           Limit                          Budget</pre>
-                </div>
-                <p id="performance-check" style="display: none;"></p>
               </div>
 
             </div>
@@ -182,6 +195,26 @@
 </html>
 
 <script>
+  // Hide rows based on window.innerWidth
+  window.addEventListener('DOMContentLoaded', function () {
+    updateRowVisibility();
+
+    window.addEventListener('resize', function () {
+      updateRowVisibility();
+    });
+
+    function updateRowVisibility() {
+      const rows = document.querySelectorAll('.hidden-row');
+      const showRows = window.innerWidth > 1024;
+
+      rows.forEach(row => {
+        row.style.display = showRows ? '' : 'none';
+      });
+    }
+  });
+</script>
+
+<script>
   // Declare inputs for ExpenseGPT
   var monthSpent, monthBudget, monthRemaining, monthPrediction, yearPrediction, healthCheck;
 
@@ -219,8 +252,8 @@
     "Other": 0
   }
 
-  expenses.forEach((expense)=>{
-    monthCategory[expense.category]+=expense.amount
+  expenses.forEach((expense) => {
+    monthCategory[expense.category] += expense.amount
   });
 
   // Assign inputs for ExpenseGPT
@@ -353,9 +386,16 @@
     };
 
     const chart = new google.visualization.LineChart(document.querySelector('.monthly-spending-chart'));
-    
+
     // Embed in a function
     function drawChart() {
+
+      // Add media query to adjust font size based on screen width
+      if (window.innerWidth <= 576) {
+        options.titleTextStyle.fontSize = 14;
+      } else {
+        options.titleTextStyle.fontSize = 16;
+      }
       chart.draw(data, options);
     }
 
@@ -388,13 +428,13 @@
 
     if (spentPercentage <= 80) {
       dotOnTrack.style.backgroundColor = "green";
-      dotOnTrack.style.boxShadow = "inset 0 0 1px 1px white";
+      dotOnTrack.style.boxShadow = "inset 0 0 0 1px white";
     } else if (spentPercentage <= 95) {
       dotApproachingLimit.style.backgroundColor = "yellow";
-      dotApproachingLimit.style.boxShadow = "inset 0 0 1px 1px white";
+      dotApproachingLimit.style.boxShadow = "inset 0 0 0 1px white";
     } else {
       dotExceedingBudget.style.backgroundColor = "red";
-      dotExceedingBudget.style.boxShadow = "inset 0 0 1px 1px white";
+      dotExceedingBudget.style.boxShadow = "inset 0 0 0 1px white";
     }
   }
 
