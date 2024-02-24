@@ -122,10 +122,9 @@ option{
         padding: 10px;
     }   
      
-    /* Remove the scrollbar */
+    /* Remove the right scrollbar */
     ::-webkit-scrollbar {
         width: 0;
-        height: 0;
     }
 }
 
@@ -168,6 +167,11 @@ option{
     .content {
         width: 100% !important;
         overflow: scroll;
+    }
+
+    /* Remove the bottom scrollbar */
+    ::-webkit-scrollbar {
+        height: 0;
     }
 }
 
