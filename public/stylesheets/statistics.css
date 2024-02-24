@@ -141,7 +141,7 @@
   }
 }
 
-@media (min-width: 576px) and (max-width: 768px) {
+/* @media (min-width: 577px) and (max-width: 768px) {
   .total-spent p, .total-budget p, .remaining p{
     font-size: 16px;
     margin: 0;
@@ -155,5 +155,36 @@
   }
   .small-1, .small-2{
     width: 30%;
+  }
+} */
+
+@media (min-width: 577px) and (max-width: 1024px) {
+  .total-spent p, .total-budget p, .remaining p{
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  .remaining p{
+    margin-bottom: 0;
+  }
+  .yearly, .monthly{
+    height: auto;
+    flex-wrap: wrap;
+  }
+  .medium{
+    width: 100%;
+    margin: 10px 0;
+  }
+  .small-1{
+    width: 60%;
+    margin: 10px 0;
+  }
+  .small-2{
+    width: 40%;
+    margin: 10px 0;
+    text-align: center;
+  }
+  .bar-chart-yearly, .line-chart-monthly{
+    height: 225px;
   }
 }

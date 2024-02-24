@@ -23,16 +23,24 @@
         <div class="menu">
             <ul>
                 <li>
-                    <a href="/dashboard"><img src="/images/icons/dashboard_white.png"><p>Dashboard</p></a>
+                    <a href="/dashboard"><img src="/images/icons/dashboard_white.png">
+                        <p>Dashboard</p>
+                    </a>
                 </li>
                 <li>
-                    <a href="/statistics"><img src="/images/icons/statistics_white.png"><p>Statistics</p></a>
+                    <a href="/statistics"><img src="/images/icons/statistics_white.png">
+                        <p>Statistics</p>
+                    </a>
                 </li>
                 <li>
-                    <a class="active"><img src="/images/icons/expenses_dark.svg"><p>Expenses</p></a>
+                    <a class="active"><img src="/images/icons/expenses_dark.svg">
+                        <p>Expenses</p>
+                    </a>
                 </li>
                 <li>
-                    <a href="/adjust"><img src="/images/icons/adjust_white.png"><p>Adjust</p></a>
+                    <a href="/adjust"><img src="/images/icons/adjust_white.png">
+                        <p>Adjust</p>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -40,7 +48,9 @@
             <div class="menu">
                 <ul>
                     <li>
-                        <a href="/logout"><img src="/images/icons/profile_white.png"><p>Logout</p></a>
+                        <a href="/logout"><img src="/images/icons/profile_white.png">
+                            <p>Logout</p>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -54,8 +64,9 @@
                 <h1>Expenses</h1>
             </div>
             <div class="buttons">
-                <a href="/expenses" style="display: none;" id="filter-button"><button>Filter <b>x</b></button></a>
-                <button onclick="openModal()"><b>+</b> Add Expense</button>
+                <a href="/expenses" style="display: none;" id="filter-button"><button id="filter-expense">Filter
+                        <b>x</b></button></a>
+                <button id="add-expense" onclick="openModal()"><b>+</b> Add Expense</button>
             </div>
         </div>
 
@@ -141,57 +152,55 @@
             </form>
         </div>
 
-        <div class="table-area">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th data-sort="string" stupidsort style="width: 20%">Category</th>
-                        <th data-sort="string" stupidsort style="width: 15%">Expense Date</th>
-                        <th data-sort="int" stupidsort style="width: 15%">Amount</th>
-                        <th data-sort="string" stupidsort style="width: 37.5%">Description</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for (let expense of expenseRecord) { %>
-                        <tr id="<%= expense._id %>">
-                            <td style="width: 20%">
-                                <%= expense.category %>
-                            </td>
-                            <td style="width: 15%">
-                                <%= expense.expenseDate.toISOString().split('T')[0] %>
-                            </td>
-                            <td style="width: 15%">
-                                <%= expense.amount %>
-                            </td>
-                            <td style="width: 37.5%">
-                                <%= expense.description %>
-                            </td>
-                            <td class="holder">
-                                <!-- Image button -->
-                                <% if (expense.expenseURL) { %>
-                                    <div class="contain-1">
-                                        <a href='<%=expense.expenseURL%>' target="_blank"><img class="image-status"
-                                                src="/images/icons/image-present.svg"></a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-sort="string" stupidsort style="width: 20%">Category</th>
+                    <th data-sort="string" stupidsort style="width: 15%"></th>
+                    <th data-sort="int" stupidsort style="width: 15%"></th>
+                    <th data-sort="string" stupidsort style="width: 37%">Description</th>
+                    <th style="width: 13%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let expense of expenseRecord) { %>
+                    <tr id="<%= expense._id %>">
+                        <td style="width: 20%">
+                            <%= expense.category %>
+                        </td>
+                        <td style="width: 15%">
+                            <%= expense.expenseDate.toISOString().split('T')[0] %>
+                        </td>
+                        <td style="width: 15%">
+                            <%= expense.amount %>
+                        </td>
+                        <td style="width: 37.5%">
+                            <%= expense.description %>
+                        </td>
+                        <td class="holder">
+                            <!-- Image button -->
+                            <% if (expense.expenseURL) { %>
+                                <div class="contain-1">
+                                    <a href='<%=expense.expenseURL%>' target="_blank"><img class="image-status"
+                                            src="/images/icons/image-present.svg"></a>
+                                </div>
+                                <% } else { %>
+                                    <div class="contain-2">
+                                        <img class="image-status" src="/images/icons/image-absent.svg">
                                     </div>
-                                    <% } else { %>
-                                        <div class="contain-2">
-                                            <img class="image-status" src="/images/icons/image-absent.svg">
-                                        </div>
-                                        <% } %>
-                                            <!-- Edit button -->
-                                            <button class="edit"
-                                                onclick="openEditModal('<%= expense._id %>', '<%= expense.category %>', `<%= expense.expenseDate.toISOString().split('T')[0] %>`, '<%= expense.amount %>', '<%= expense.description %>')">Edit</button>
+                                    <% } %>
+                                        <!-- Edit button -->
+                                        <button class="edit"
+                                            onclick="openEditModal('<%= expense._id %>', '<%= expense.category %>', `<%= expense.expenseDate.toISOString().split('T')[0] %>`, '<%= expense.amount %>', '<%= expense.description %>')"></button>
 
-                                            <!-- Delete button -->
-                                            <button class="delete"
-                                                onclick="confirmDelete('<%= expense._id %>')">Delete</button>
-                            </td>
-                        </tr>
-                        <% } %>
-                </tbody>
-            </table>
-        </div>
+                                        <!-- Delete button -->
+                                        <button class="delete"
+                                            onclick="confirmDelete('<%= expense._id %>')"></button>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
 
 
 
@@ -245,6 +254,53 @@
 
 </html>
 
+<script>
+    // For window resizes
+    function media() {
+        const expenseDateTh = document.querySelector('th[data-sort="string"][stupidsort]:nth-child(2)');
+        const amountTh = document.querySelector('th[data-sort="int"][stupidsort]');
+        const options = document.querySelector('th:nth-child(5)')
+        const addExpenseButton = document.getElementById('add-expense');
+        const editButtons = document.getElementsByClassName('edit');
+        const deleteButtons = document.getElementsByClassName('delete');
+
+        if (window.innerWidth <= 768) {
+            expenseDateTh.innerText = "Date";
+            for (const button of editButtons) {
+                button.innerText = "Edt";
+            }
+            for (const button of deleteButtons) {
+                button.innerText = "Del";
+            }
+        } 
+        else {
+            expenseDateTh.innerText = "Expense Date";
+            for (const button of editButtons) {
+                button.innerText = "Edit";
+            }
+            for (const button of deleteButtons) {
+                button.innerText = "Delete";
+            }
+        }
+
+        if (window.innerWidth <= 576) {
+            amountTh.innerText = "Amt";
+            addExpenseButton.innerHTML = "<b>+</b> Add";
+            options.innerText = "";
+        } 
+        else {
+            amountTh.innerText = "Amount";
+            addExpenseButton.innerHTML = "<b>+</b> Add Expense";
+            options.innerText = "";
+        }
+    }
+
+    media();
+
+    window.addEventListener('resize', media);
+
+</script>
+
 <script defer>
     // Sort tables after DOM is loaded
     $(document).ready(function () {
@@ -267,8 +323,6 @@
         var charCountElement = document.getElementById('charCountEdit');
         charCountElement.textContent = textarea.value.length + '/50';
     }
-
-
 
 
     // First modal
@@ -308,7 +362,7 @@
         const category = document.getElementById('editCategory').value;
         const expenseDate = document.getElementById('editExpenseDate').value;
         const amount = document.getElementById('editAmount').value;
-        const description = document.getElementById('editDescription').value;
+        const description = document.getElementById('editDescription').value.replace(/\n/g, " ");
 
         const data = {
             editExpenseId: expenseId,

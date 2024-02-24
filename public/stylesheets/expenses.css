@@ -143,36 +143,29 @@ textarea {
   resize: none;
 }
 
-
-
-
-
-.table-area{
-  /* background-color: aqua; */
-  margin: 20px 10px 0;
-  border-radius: 5px;
-}
-
 .table{
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  height: 100%;
   width: 100%;
   text-align: center;
   border-collapse: collapse;
+  overflow-y: scroll;
 }
 
 thead{
   border-bottom: 1px solid #C4C4C4;
+  width: 100%;
 }
 
 tbody{
-  padding-top: 5px;
+  padding-top: 10px;
   overflow-y: scroll;
-  height: 400px;
-  /* height: calc(90% - 30px); */
-  display: block;
 }
 
 th{
-  padding: 15px 0px 10px;
+  padding: 15px 0px;
 }
 
 th:hover{
@@ -198,23 +191,29 @@ tr {
 .table tbody tr:nth-child(odd) {
   background-color: #ffffff;
 } */
+
 .holder{
   display: flex;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .contain-1{
+  width: 30px;
   background-color: #aaaaaa;
   border-radius: 5px;
   padding: 0 2px;
   height: 25px;
+  margin: 2.5px;
 }
 
 .contain-2{
+  width: 30px;
   background-color: #d5d5d5;
   border-radius: 5px;
   padding: 0 2px;
   height: 25px;
+  margin: 2.5px;
 }
 
 .image-status{
@@ -228,7 +227,7 @@ tr {
   background-color: #4789B7;
   color: white;
   border: none;
-  margin: 0 5px;
+  margin: 2.5px;
   border-radius: 5px;
 }
 
@@ -238,6 +237,7 @@ tr {
   background-color: red;
   color: white;
   border: none;
+  margin: 2.5px;
   border-radius: 5px;
 }
 
@@ -251,3 +251,98 @@ input[type="file"]::-webkit-file-upload-button {
   font-size: 16px;
   padding: 3px 5px;
 }
+
+/* Media */
+
+/* Responsive adjustments */
+
+@media (max-width: 576px) {
+  .top h1{
+    font-size: 24px;
+  }
+  .buttons button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  .filter{
+    padding: 15px;
+    margin: 15px 10px;
+  }
+  .field-area{
+    flex-direction: column;
+  }
+  .filter-field{
+    width:100%;
+  }
+  .filter-field label{
+    font-size: 12px;
+  }
+  .filter-field select,
+  .filter-field select option,
+  .filter-field input{
+    width: 100%;
+    height: 30px;
+    margin: 5px 0px;
+    padding: 5px;
+    font-size: 12px;
+  }
+  .filter form button{
+    font-size: 12px;
+  }
+
+
+  .table{ 
+    padding: 0 10px;
+  }
+  th{
+    font-size: 12px;
+  }
+  td{
+    font-size: 12px;
+    padding: 10px 0px;
+    word-wrap: break-word;
+    display: inline-block;
+    overflow: hidden;
+  }
+  tr th:nth-child(1), tr td:nth-child(1){
+    /* background-color: bisque; */
+    width: 35% !important;
+  }
+  tr th:nth-child(2), tr td:nth-child(2){
+    /* background-color: aqua; */
+    width: 15% !important;
+  }
+  tr th:nth-child(3), tr td:nth-child(3){
+    /* background-color: coral; */
+    width: 15% !important;
+  }
+  tr th:nth-child(4), tr td:nth-child(4){
+    /* background-color: deeppink; */
+    width: 35% !important;
+  }
+  tr th:nth-child(5), tr td:nth-child(5){
+    width: auto !important;
+  }
+  .holder{
+    padding: 0;
+  }
+  .edit, .delete{
+    font-size: 8px;
+    margin-right: 0;
+    width: 22.5px;
+  }
+  .image-status{
+    height: 14px;
+  }
+  .contain-1, .contain-2{
+    width: 22.5px;
+    height: 19px;
+    padding: 0;
+    margin-right: 0;
+  }
+}
+
+/* @media (min-width: 576px) and (max-width: 768px) {
+  
+} */

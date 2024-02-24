@@ -218,3 +218,7 @@ tr{
   background-color: #ffffff;
   border-radius: 50%;
 }
+
+@media (min-width: 577px) and (max-width: 1024px) {
+  
+}

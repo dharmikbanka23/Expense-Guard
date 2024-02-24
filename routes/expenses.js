@@ -27,7 +27,10 @@ router.post('/add', authenticate, upload.single('expenseImage'), async function 
   let { category, expenseDate, amount, description } = req.body;
 
   // Make sure remove sensitive characters from description
-  description = description.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, "");
+  description = description.replace(/[^a-zA-Z0-9\s_\-,:;+=()]/g, " ");
+
+  // Make sure replace the \n with space
+  description = description.replace(/\r?\n/g, " ");
 
   let s3url = "";
 
