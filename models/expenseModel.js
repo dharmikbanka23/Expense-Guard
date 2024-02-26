@@ -5,8 +5,8 @@ const expenseSchema = new mongoose.Schema({
     category: { type: String, required: true },
     expenseDate: { type: Date, required: true },
     amount: { type: Number, required: true },
-    description: { type: String},
-    expenseURL: { type: String},
+    description: { type: String },
+    expenseURL: { type: String },
 });
 
 // // Pre-save hook
